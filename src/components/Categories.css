@@ -1,0 +1,32 @@
+.categories .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px;
+  }
+  
+  .category {
+    flex: 0 1 calc(25% - 20px); /* Default to 4 items per row */
+    margin-bottom: 20px; /* Space between rows */
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  .category img {
+    width: 100px; /* Adjust based on your preference */
+    height: 100px; /* Equal width and height for a circle */
+    border-radius: 50%; /* Round images */
+    object-fit: cover;
+    margin-bottom: 10px;
+  }
+  
+  /* Adjust for larger screens (e.g., laptops) */
+  @media (min-width: 1024px) { /* Adjust this breakpoint based on your design */
+    .category {
+      flex: 0 1 calc(12.5% - 20px); /* Now 8 items per row */
+    }
+  }
+  

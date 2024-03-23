@@ -1,0 +1,38 @@
+.products-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 0 10px;
+  }
+  
+  .product-card {
+    width: 20%; /* Each product card takes up 20% of the container width */
+    margin: 0 auto; /* Center the product cards within the container */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    padding: 10px; /* Add padding to create space between product cards */
+    float: left; /* Float the product cards to enable inline display */
+  }
+  
+  /* Clear float after every 5th product card to start a new row */
+  .product-card:nth-child(5n+1) {
+    clear: both;
+  }
+  
+  /* Adjust product image size to fit within product card */
+  .product-card img {
+    width: 100%; /* Make the image width 100% of the product card */
+    height: auto; /* Automatically adjust the image height to maintain aspect ratio */
+  }
+  
+  @media screen and (max-width: 768px) {
+    .product-card {
+      width: calc(50% - 20px); /* Set the width to 50% of the container width minus margin */
+    }
+  }
+  
+  @media screen and (max-width: 480px) {
+    .product-card {
+      width: calc(100% - 20px); /* Set the width to 100% of the container width minus margin */
+    }
+  }
+  
