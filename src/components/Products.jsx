@@ -54,7 +54,7 @@ function Products() {
         alert("Product added to cart!");
       } else if (response.status === 401) {
         alert("You need to sign in to add products to the cart.");
-        window.location.href = "/signin.html";
+        window.location.href = "http://localhost:3000/signin";
       } else {
         throw new Error("Failed to add product to cart.");
       }

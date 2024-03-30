@@ -7,27 +7,25 @@ function Cart() {
     fetchCartItems();
   }, []);
 
-  const fetchCartItems = () => {
-    fetch('http://localhost:3001/api/cart', {
-      method: 'GET',
-      credentials: 'include', // Include cookies
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(response => {
+  const fetchCartItems = async () => {
+    try {
+      const response = await fetch('http://localhost:3001/api/cart', {
+        method: 'GET',
+        credentials: 'include', // This is crucial for including cookies/session
+      });
+  
       if (!response.ok) {
         throw new Error('Failed to fetch cart items');
       }
-      return response.json();
-    })
-    .then(data => {
-      setCartItems(data); // Assuming data is an array of cart items
-    })
-    .catch(error => {
+  
+      const data = await response.json();
+      console.log('Cart items:', data);
+      setCartItems(data); // Update the state with fetched data
+    } catch (error) {
       console.error('Error fetching cart items:', error);
-    });
+    }
   };
+  
 
   const deleteCartItem = (productId) => {
     fetch(`http://localhost:3001/api/cart/${productId}`, {

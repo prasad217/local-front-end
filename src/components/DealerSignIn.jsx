@@ -19,21 +19,20 @@ function DealerSignIn() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Assuming you have an endpoint `/api/dealer/signin` to handle the post request
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/dealer/signin`, {
+      // Updated fetch request with credentials: 'include'
+      const response = await fetch('http://localhost:3001/dealer/signin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include', // Ensures cookies are sent with the request
         body: JSON.stringify(formData)
       });
 
       if (!response.ok) throw new Error('Failed to sign in');
-      // Handle success
       console.log('Dealer signed in successfully');
-      // Redirect to Dealer Home after successful sign-in
-      navigate('/dealerhome');
+      navigate('/dealerhome'); // Redirect to Dealer Home after successful sign-in
     } catch (error) {
       console.error('Error signing in dealer:', error);
     }
