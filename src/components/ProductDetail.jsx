@@ -24,6 +24,31 @@ function ProductDetail() {
       .catch(error => console.error("Failed to fetch product or related products", error));
   }, [productId]);
 
+  const addToCart = (productId) => {
+    // Assuming you have a user session and the API expects a productId
+    fetch('http://localhost:3001/api/cart', {
+      method: 'POST',
+      credentials: 'include', // for session cookies
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ productId }),
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Could not add product to cart');
+      }
+      return response.json();
+    })
+    .then(data => {
+      alert('Product added to cart successfully'); // Or update state to show in UI
+    })
+    .catch(error => {
+      console.error("Failed to add product to cart", error);
+    });
+  };
+
+
   if (!product) return <div>Loading...</div>;
 
   return (
@@ -32,7 +57,7 @@ function ProductDetail() {
       <h2>{product.name}</h2>
       <p>Price: ₹{product.actual_cost}</p>
       <p>Discount Price: ₹{product.discount_price}</p>
-      <button>Add to Cart</button>
+      <button className='add-to-cart-btn' onClick={() => addToCart(product.id)}>Add to Cart</button>
       <p>{product.description}</p>
       
       <h3>Related Products</h3>

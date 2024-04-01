@@ -1,0 +1,108 @@
+.cartItems {
+    display: flex;
+    flex-direction: column;
+    max-width: 100%; /* Ensures container does not exceed viewport width */
+    overflow-x: auto; /* Enables horizontal scrolling for overflow content */
+  }
+  
+  .cartItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+  }
+  
+  .productImage {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin-right: 20px;
+  }
+  
+  .productName {
+    flex-grow: 1;
+    margin-right: 20px;
+  }
+  
+  .quantityControl {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+  }
+  
+  .price {
+    margin-right: 20px;
+  }
+  
+  .removeButton {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+
+  .totalBill {
+    flex-basis: 20%; /* Adjust the width of the total bill container */
+    padding: 20px; /* Optional padding */
+    text-align: right; /* Align the total bill text to the right */
+    /* Additional styling for total bill container */
+}
+
+.proceedToPayButton {
+    display: block;
+    width: 200px; /* Adjusting for padding if necessary */
+    margin-top: 20px;
+    padding: 10px 0;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: auto;
+   
+}
+
+.proceedToPayButton:hover {
+    background-color: #45a049;
+}
+  
+  .removeButton:hover {
+    background-color: darkred;
+  }
+  
+  button {
+    margin: 0 5px;
+  }
+  
+  /* Media query for smaller screens */
+  @media (max-width: 768px) {
+    .cartItem {
+      flex-direction: column;
+      align-items: flex-start; /* Adjust alignment for stacked layout */
+    }
+  
+    .productName, .quantityControl, .price, .removeButton {
+      margin-right: 0; /* Remove right margin for stacked layout */
+      margin-bottom: 10px; /* Add space between stacked items */
+      width: 100%; /* Ensure full width is used for each element */
+    }
+  
+    .productImage {
+      margin-right: 0; /* Align with other changes for smaller screens */
+      margin-bottom: 10px; /* Space below image before text */
+    }
+  
+    .quantityControl button, .removeButton {
+      padding: 10px 15px; /* Increase padding for easier touch */
+    }
+  
+    /* Optionally adjust font sizes for readability on small screens */
+    .productName h3, .price p, .quantityControl p {
+      font-size: larger; /* Increase text size for better readability */
+    }
+  }
+  
