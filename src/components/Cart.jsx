@@ -28,24 +28,31 @@ function Cart() {
   
 
   const deleteCartItem = (productId) => {
+    // Optimistically remove the item from the UI
+    const newCartItems = cartItems.filter(item => item.id !== productId);
+    setCartItems(newCartItems);
+  
+    // Attempt to delete the item from the backend
     fetch(`http://localhost:3001/api/cart/${productId}`, {
       method: 'DELETE',
-      credentials: 'include', // Include cookies
+      credentials: 'include',
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     })
     .then(response => {
       if (!response.ok) {
         throw new Error('Failed to delete cart item');
       }
-      fetchCartItems(); // Refresh cart items after deletion
+      // Optionally refresh or leave the optimistic update
     })
     .catch(error => {
       console.error('Error deleting cart item:', error);
+      // Revert the optimistic update upon failure
+      fetchCartItems();
     });
   };
-
+  
   const updateCartItemQuantity = (productId, newQuantity) => {
     fetch(`http://localhost:3001/api/cart/items/${productId}`, {
       method: 'PATCH',
