@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styles from './Cart.module.css';
+import { useNavigate } from 'react-router-dom';
 
 function Cart() {
   const [cartItems, setCartItems] = useState([]);
+  const navigate = useNavigate(); // Ensure useNavigate is called at the top level of your component
 
   useEffect(() => {
     fetchCartItems();
@@ -68,7 +70,11 @@ function Cart() {
   };
 
   // Calculate total bill
-  const totalBill = cartItems.reduce((acc, item) => acc + parseFloat(item.price) * item.quantity, 0);
+  const totalBill = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+
+  const handleProceedToPay = () => {
+    navigate('/checkout'); // Use navigate inside a function, not directly in JSX or conditional statements
+  };
 
   if (cartItems.length === 0) {
     return <p>Your cart is empty</p>;
@@ -87,14 +93,17 @@ function Cart() {
               <button onClick={() => updateCartItemQuantity(item.id, item.quantity - 1)}>-</button>
               <button onClick={() => updateCartItemQuantity(item.id, item.quantity + 1)}>+</button>
             </span>
-            <span className={styles.price}>${item.price ? parseFloat(item.price).toFixed(2) : '0.00'}</span>
+            <span className={styles.price}>
+  ${item.price ? parseFloat(item.price).toFixed(2) : '0.00'}
+</span>
+
             <button onClick={() => deleteCartItem(item.id)} className={styles.removeButton}>Remove</button>
           </div>
         ))}
-   <div className={styles.totalBill}>
-    Total Bill: ${totalBill.toFixed(2)}
-    <button className={styles.proceedToPayButton}>Proceed to Pay</button>
-</div>
+        <div className={styles.totalBill}>
+          Total Bill: ${totalBill.toFixed(2)}
+          <button className={styles.proceedToPayButton} onClick={handleProceedToPay}>Proceed to Pay</button>
+        </div>
       </div>
     </div>
   );

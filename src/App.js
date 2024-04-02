@@ -13,6 +13,8 @@ import ProductDetail from './components/ProductDetail';
 import CategoryProducts from './components/CategoryProducts';
 import './components/Navbar.css';
 import Cart from './components/Cart';
+import Checkout from './components/Checkout';
+
 function App() {
   return (
     <Router>
@@ -25,6 +27,7 @@ function App() {
           <Route path="/dealersignin" element={<DealerSignIn />} /> {/* Dealer sign-in */}
           <Route path="/dealer/register" element={<DealerRegistration />} />
           <Route path="/dealerhome" element={<DealerHome />} /> 
+          <Route path="/checkout" element={<Checkout />} />
           <Route path="/product/:productId" element={<ProductDetail />} /> {/* Corrected */}
           <Route path="/category/:categoryName" element={<CategoryProducts />} /> {/* Corrected */}
           <Route path="/cart" element={<Cart />} />

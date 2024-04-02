@@ -95,6 +95,28 @@ function DealerHome() {
     }
   };
 
+  const deleteproduct = async (productId) => {
+    try {
+      const response = await fetch(`http://localhost:3001/api/dealer/products/${productId}`, {
+        method: 'DELETE',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to delete product');
+      }
+  
+      fetchProducts(); // Refresh products after deletion
+    } catch (error) {
+      console.error('Error deleting product:', error);
+    }
+  };
+  
+  
+
   return (
     <div className="container">
       <button onClick={handleLogout}>Logout</button>
@@ -206,7 +228,8 @@ function DealerHome() {
               <td>{product.instockqty}</td>
               <td>
                 <button>Edit Stock</button>
-                <button>Delete</button>
+                <button onClick={() => deleteproduct(product.id)}>Remove</button>
+
                 <button>Change Price</button>
               </td>
             </tr>
