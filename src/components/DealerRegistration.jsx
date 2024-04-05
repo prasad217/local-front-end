@@ -28,7 +28,7 @@ function DealerRegistration() {
     e.preventDefault();
     // Assuming you have an endpoint `/api/dealer/register` to handle the post request
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/dealer/register`, {
+      const response = await fetch(`http://localhost:3001/dealer/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

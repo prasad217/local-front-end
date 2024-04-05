@@ -13,7 +13,9 @@ import ProductDetail from './components/ProductDetail';
 import CategoryProducts from './components/CategoryProducts';
 import './components/Navbar.css';
 import Cart from './components/Cart';
+import OrderConfirmation from './components/OrderConfirmation';
 import Checkout from './components/Checkout';
+import DealerOrders from './components/DealerOrders';
 
 function App() {
   return (
@@ -21,16 +23,18 @@ function App() {
       <div>
         <Navbar />
         <Routes>
-          <Route path="/" element={<><Slider /><Categories /><Products /></>} exact />
-          <Route path="/signin" element={<SignIn />} /> {/* Normal sign-in */}
-          <Route path="/register" element={<RegistrationForm />} /> {/* Normal registration */}
-          <Route path="/dealersignin" element={<DealerSignIn />} /> {/* Dealer sign-in */}
+          <Route path="/" element={<><Slider /><Categories /><Products /></>} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/register" element={<RegistrationForm />} />
+          <Route path="/dealersignin" element={<DealerSignIn />} />
           <Route path="/dealer/register" element={<DealerRegistration />} />
           <Route path="/dealerhome" element={<DealerHome />} /> 
           <Route path="/checkout" element={<Checkout />} />
-          <Route path="/product/:productId" element={<ProductDetail />} /> {/* Corrected */}
-          <Route path="/category/:categoryName" element={<CategoryProducts />} /> {/* Corrected */}
+          <Route path="/product/:productId" element={<ProductDetail />} />
+          <Route path="/category/:categoryName" element={<CategoryProducts />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/order-confirmation" element={<OrderConfirmation />} />
+          <Route path="/dealer/orders" element={<DealerOrders />} />
         </Routes>
       </div>
     </Router>

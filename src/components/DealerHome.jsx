@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 
 function DealerHome() {
   const [dealerInfo, setDealerInfo] = useState({});
@@ -120,6 +121,9 @@ function DealerHome() {
   return (
     <div className="container">
       <button onClick={handleLogout}>Logout</button>
+      <Link to="/dealer/orders">
+  <button>View Orders</button>
+</Link>
       <h2>Welcome, {dealerInfo.name || 'Dealer'}!</h2>
       {formMessage && <p>{formMessage}</p>}
       <button id="add-product-btn" onClick={() => setShowForm(!showForm)}>
