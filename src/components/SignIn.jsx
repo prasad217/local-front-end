@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import './SignIn.css';
+import styles from './Signin.module.css'; 
+
 
 function SignIn() {
   const [email, setEmail] = useState('');
@@ -31,22 +32,25 @@ function SignIn() {
   };
 
   return (
-    <div className="container">
-      <h2>Sign In</h2>
-      <form onSubmit={handleSignIn}>
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input type="email" id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input type="password" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-        </div>
-        <button type="submit">Sign In</button>
-      </form>
-      <p>Not a user? <a href="/register">Register now</a></p>
-      <p>Dealer? <a href="/dealersignin">Sign in now</a></p>
-      <p>Are you a delivery agent? <a href="/delivery-agent-signin">Sign in here</a>.</p>
+    <div>
+      <h1 className={styles.header}>Local Treasures</h1> {/* Moved the heading outside the container */}
+      <div className={styles.containe}>
+        <h2 className={styles.subHeader}>Sign In</h2>
+        <form onSubmit={handleSignIn}>
+          <div>
+            <label htmlFor="email">Email:</label>
+            <input type="email" id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} required className={styles.input} />
+          </div>
+          <div>
+            <label htmlFor="password">Password:</label>
+            <input type="password" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} required className={styles.input} />
+          </div>
+          <button type="submit" className={styles.submitButton}>Sign In</button>
+        </form>
+        <p className={styles.link}>Not a user? <a href="/register">Register now</a></p>
+        <p className={styles.link}>Dealer? <a href="/dealersignin">Sign in now</a></p>
+        <p className={styles.link}>Are you a delivery agent? <a href="/delivery-agent/signin">Sign in here</a>.</p>
+      </div>
     </div>
   );
 }

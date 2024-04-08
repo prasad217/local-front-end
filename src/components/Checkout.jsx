@@ -108,10 +108,9 @@ function Checkout() {
 
   const placeOrder = () => {
     const orderDetails = {
-      addressId: selectedAddress, // Assuming 'selectedAddress' holds the ID of the chosen address
-      items: cartItems.map(item => ({ productId: item.product_id, quantity: item.quantity })), // Adapted for backend
-      totalPrice: totalPrice, // Calculated total price
-     
+      addressId: selectedAddress,
+      items: cartItems.map(item => ({ productId: item.product_id, quantity: item.quantity })),
+      totalPrice: totalPrice,
     };
   
     fetch('http://localhost:3001/api/orders', {
@@ -130,6 +129,7 @@ function Checkout() {
     })
     .then(data => {
       console.log("Order placed successfully", data);
+      setCartItems([]); // Clear the cart in the frontend
       navigate('/order-confirmation'); // Navigate to confirmation page or show success message
     })
     .catch(error => {
@@ -138,7 +138,6 @@ function Checkout() {
     });
   };
   
-
   return (
     <div>
       <h1>Checkout</h1>

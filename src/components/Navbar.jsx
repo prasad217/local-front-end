@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import cartIcon from './images/cart.png';
+import './Navbar.css';
 
 function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState('');
   const [showMenu, setShowMenu] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     // Check if user is logged in
@@ -27,7 +29,6 @@ function Navbar() {
         console.error('Error checking login status:', error);
       }
     };
-
     checkLoggedIn();
   }, []);
 
@@ -45,6 +46,37 @@ function Navbar() {
     }
   };
 
+  // Function to determine if the Navbar should be rendered
+  const shouldRenderNavbar = () => {
+    const allowedPaths = [
+      '/checkout',
+      '/order-confirmation',
+      '/',
+      '/products',
+      '/cart',
+    ];
+  
+    // Check if the current pathname matches any of the allowed static paths
+    const isAllowedStaticPath = allowedPaths.includes(location.pathname);
+  
+    // Pattern to match product pages (e.g., /product/2)
+    const productPagePattern = /^\/product\/\d+$/; // \d+ matches one or more digits
+  
+    // Pattern to match category pages (e.g., /category/electronics)
+    const categoryPagePattern = /^\/category\/[a-zA-Z0-9_-]+$/; // Matches alphanumeric characters, including dashes and underscores
+  
+    const isProductPage = productPagePattern.test(location.pathname);
+    const isCategoryPage = categoryPagePattern.test(location.pathname);
+  
+    // Return true if the current path matches any of the conditions
+    return isAllowedStaticPath || isProductPage || isCategoryPage;
+  };
+  
+
+  if (!shouldRenderNavbar()) {
+    return null;
+  }
+
   return (
     <nav className="nav">
       <div className="container">
@@ -54,12 +86,14 @@ function Navbar() {
             <img src={cartIcon} alt="Cart" style={{ width: '30px', height: '30px', marginRight: '10px' }} />
           </Link>
           {isLoggedIn ? (
-            <div className="userName">
-              <span onClick={() => setShowMenu(!showMenu)}>{userName}</span>
+            <div className="userName" onClick={() => setShowMenu(!showMenu)}>
+              {userName}
               {showMenu && (
                 <div className="userMenu">
-                  <div>Account Details</div>
-                  <button onClick={handleLogout}>Sign Out</button>
+                  <Link to="/profile" className="menu-item">Profile</Link>
+                  <Link to="/orders" className="menu-item">Orders</Link>
+                  <Link to="/help" className="menu-item">Help</Link>
+                  <button onClick={handleLogout} className="menu-item">Sign Out</button>
                 </div>
               )}
             </div>

@@ -1,0 +1,56 @@
+
+  
+  /* Signin form container */
+  .containe {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Signin form header */
+  .form-header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Signin form input fields */
+  .input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  /* Signin form submit button */
+  .submitButton {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  /* Signin form submit button on hover */
+  .submitButton:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Link styles */
+  .link {
+    text-align: center;
+    margin-top: 15px;
+  }
+  
+  /* Footer styles */
+  .footer {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+  }
