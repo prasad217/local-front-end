@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import styles from './DeliveryRegistration.module.css';
 
 function DeliveryRegistration() {
     const [registrationForm, setRegistrationForm] = useState({
@@ -64,28 +65,28 @@ function DeliveryRegistration() {
         });
       };
   return (
-    <div>
-      <h2>Delivery Agent Registration</h2>
-      <form onSubmit={handleRegister}>
-        <input type="text" name="name" placeholder="Name" value={registrationForm.name} onChange={handleRegistrationChange} />
-        <input type="text" name="phone" placeholder="Phone" value={registrationForm.phone} onChange={handleRegistrationChange} />
-        <input type="date" name="dob" placeholder="Date of Birth" value={registrationForm.dob} onChange={handleRegistrationChange} />
-        <input type="email" name="email" placeholder="Email" value={registrationForm.email} onChange={handleRegistrationChange} />
-        <input type="text" name="address" placeholder="Address" value={registrationForm.address} onChange={handleRegistrationChange} />
-        <input type="text" name="vehicle_number" placeholder="Vehicle Number" value={registrationForm.vehicle_number} onChange={handleRegistrationChange} />
-        <input type="password" name="password" placeholder="Password" value={registrationForm.password} onChange={handleRegistrationChange} />
-        <button type="submit">Register</button>
-      </form>
-      {emailForOtp && (
-        <>
-          <h2>Verify OTP</h2>
-          <form onSubmit={verifyOtp}>
-            <input type="text" placeholder="Enter OTP" value={otp} onChange={handleOtpChange} />
-            <button type="submit">Verify OTP</button>
-          </form>
-        </>
-      )}
-    </div>
+    <div className="container">
+    <h2 className="registration-heading">Delivery Agent Registration</h2>
+    <form className="registration-form" onSubmit={handleRegister}>
+      <input type="text" className="input-field" name="name" placeholder="Name" value={registrationForm.name} onChange={handleRegistrationChange} />
+      <input type="text" className="input-field" name="phone" placeholder="Phone" value={registrationForm.phone} onChange={handleRegistrationChange} />
+      <input type="date" className="input-field" name="dob" placeholder="Date of Birth" value={registrationForm.dob} onChange={handleRegistrationChange} />
+      <input type="email" className="input-field" name="email" placeholder="Email" value={registrationForm.email} onChange={handleRegistrationChange} />
+      <input type="text" className="input-field" name="address" placeholder="Address" value={registrationForm.address} onChange={handleRegistrationChange} />
+      <input type="text" className="input-field" name="vehicle_number" placeholder="Vehicle Number" value={registrationForm.vehicle_number} onChange={handleRegistrationChange} />
+      <input type="password" className="input-field" name="password" placeholder="Password" value={registrationForm.password} onChange={handleRegistrationChange} />
+      <button type="submit" className="submit-button">Register</button>
+    </form>
+    {emailForOtp && (
+      <div className="otp-section">
+        <h2 className="otp-heading">Verify OTP</h2>
+        <form className="otp-form" onSubmit={verifyOtp}>
+          <input type="text" className="otp-input" placeholder="Enter OTP" value={otp} onChange={handleOtpChange} />
+          <button type="submit" className="otp-submit-button">Verify OTP</button>
+        </form>
+      </div>
+    )}
+  </div>
   );
 }
 

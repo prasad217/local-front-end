@@ -102,6 +102,14 @@ function Navbar() {
               <Link to="/signin">Sign In</Link>
             </div>
           )}
+           <div className="navRight">
+          {/* Existing nav items... */}
+          {/* Add Get Nearby Stores Button */}
+          <Link to="/dealers/nearby" className="nearbyStoresButton">
+            Get Nearby Stores
+          </Link>
+          {/* Cart, Profile/Sign In links remain the same */}
+        </div>
         </div>
       </div>
     </nav>

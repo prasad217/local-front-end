@@ -18,8 +18,10 @@ import Cart from './components/Cart';
 import OrderConfirmation from './components/OrderConfirmation';
 import Checkout from './components/Checkout';
 import DealerOrders from './components/DealerOrders';
-import DeliveryRegistration from './DeliveryRegistration';
+import DeliveryRegistration from './components/DeliveryRegistration';
 import DeliveryAgentSignIn from './components/DeliveryAgentSignIn';
+import NearbyDealers from './components/NearbyDealers';
+import DealerProducts from './components/DealerProducts';
 
 function App() {
   return (
@@ -40,6 +42,8 @@ function App() {
         <Route path="/dealer/orders" element={<DealerOrders />} />
         <Route path="/delivery-agent/register" element={<DeliveryRegistration />} />
         <Route path="/delivery-agent/signin" element={<DeliveryAgentSignIn />} />
+        <Route path="/dealers/nearby" element={<NearbyDealers />} />
+        <Route path="/dealers/:dealerId/products" element={<DealerProducts />} />
       </Routes>
     </Router>
   );
