@@ -22,11 +22,13 @@ import DeliveryRegistration from './components/DeliveryRegistration';
 import DeliveryAgentSignIn from './components/DeliveryAgentSignIn';
 import NearbyDealers from './components/NearbyDealers';
 import DealerProducts from './components/DealerProducts';
-
+import NearbyNavbar from './components/NearbyNavbar';
+import NearbyProductsCart from './components/NearbyProductsCart';
 function App() {
   return (
     <Router>
       <Navbar />
+      <NearbyNavbar />
       <Routes>
         <Route path="/" element={<><Slider /><Categories /><Products /></>} />
         <Route path="/signin" element={<SignIn />} />
@@ -44,6 +46,7 @@ function App() {
         <Route path="/delivery-agent/signin" element={<DeliveryAgentSignIn />} />
         <Route path="/dealers/nearby" element={<NearbyDealers />} />
         <Route path="/dealers/:dealerId/products" element={<DealerProducts />} />
+        <Route path="/nearby/cart" element={<NearbyProductsCart />} />
       </Routes>
     </Router>
   );

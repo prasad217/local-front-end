@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+
+import styles from './NearbyDealers.module.css';
 
 const NearbyDealers = () => {
     const [dealers, setDealers] = useState([]);
@@ -37,25 +38,30 @@ const NearbyDealers = () => {
     };
 
     return (
-        <div>
+        <div className={styles.dealersContainer}>
             {locationError && <p>{locationError}</p>}
-            <ul>
+            <div className={styles.dealersList}>
                 {dealers.map(dealer => (
-                    <li key={dealer.id}>
-                        <strong>
-                            <Link to={`/dealers/${dealer.id}/products`}>{dealer.shop_name}</Link>
-                        </strong><br />
-                        Name: {dealer.name}<br />
-                        Phone: {dealer.phone}<br />
-                        Email: {dealer.email}<br />
-                        Address: {dealer.address}<br />
-                        <a href={dealer.location_link} target="_blank" rel="noopener noreferrer">View on Map</a>
-                        <p>{dealer.distance ? `${dealer.distance.toFixed(2)} km away` : ''}</p>
-                    </li>
+                    <div key={dealer.id} className={styles.dealerItem} onClick={() => navigateToDealerProducts(dealer.id)}>
+                        <div className={styles.dealerContent}>
+                            <strong>{dealer.shop_name}</strong><br />
+                            Name: {dealer.name}<br />
+                            Phone: {dealer.phone}<br />
+                            Email: {dealer.email}<br />
+                            Address: {dealer.address}<br />
+                            <a href={dealer.location_link} target="_blank" rel="noopener noreferrer">View on Map</a>
+                            <p>{dealer.distance ? `${dealer.distance.toFixed(2)} km away` : ''}</p>
+                        </div>
+                    </div>
                 ))}
-            </ul>
+            </div>
         </div>
     );
+};
+
+const navigateToDealerProducts = (dealerId) => {
+    // Navigate to dealer products page when clicking on a dealer item
+    window.location.href = `/dealers/${dealerId}/products`;
 };
 
 export default NearbyDealers;

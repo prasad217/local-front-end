@@ -1,0 +1,78 @@
+.cartItems {
+    margin-top: 20px;
+  }
+  
+  .cartItem {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .productImage {
+    width: 100px;
+    height: 100px;
+    margin-right: 20px;
+  }
+  
+  .productName {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .quantityControl {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+  }
+  
+  .quantityControl button {
+    margin: 0 5px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .quantityControl button:hover {
+    background-color: #0056b3;
+  }
+  
+  .price {
+    margin-left: 20px;
+    font-size: 16px;
+  }
+  
+  .removeButton {
+    margin-left: auto;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .removeButton:hover {
+    background-color: #bb2d3b;
+  }
+  
+  .totalBill {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .proceedToPayButton {
+    margin-left: auto;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+  .proceedToPayButton:hover {
+    background-color: #218838;
+  }
+  

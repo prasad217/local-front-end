@@ -1,0 +1,63 @@
+/* src/components/NearbyNavbar.module.css */
+
+.nearbyNavbar {
+    background-color: #004d40; /* Teal background */
+    color: white;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10%;
+  }
+  
+  .container {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .title {
+    font-size: 1.5em;
+  }
+  
+  .navRight {
+    display: flex;
+    align-items: center;
+  }
+  
+  .menuItem {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: inline-block;
+  }
+  
+  .cartIcon {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+  }
+  
+  .userName {
+    cursor: pointer;
+    display: inline-block;
+  }
+  
+  .userMenu {
+    position: absolute;
+    background-color: #f9f9f9;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+  .signinButton {
+    background-color: dodgerblue; /* Apply background color */
+  padding: 5px 10px; /* Adjust padding */
+  border-radius: 5px; /* Add border radius */
+  margin-left: 10px;
+  }
+  .signinButton a {
+    color: white;
+  }
+  
+  

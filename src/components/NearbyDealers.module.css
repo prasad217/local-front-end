@@ -1,0 +1,52 @@
+/* NearbyDealers.module.css */
+
+.dealersList {
+  max-width: 100%; /* Adjust to fit the container */
+  margin: auto;
+  padding: 20px;
+}
+
+.dealerItem {
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.dealerItem:not(:last-child) {
+  border-bottom: 1px solid #ccc;
+}
+
+.icon {
+  width: 20px; /* Adjust size as needed */
+  height: 20px; /* Adjust size as needed */
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+.iconLink {
+  color: #007bff; /* Adjust color as needed */
+  text-decoration: none; /* No underline */
+}
+
+.iconLink:hover {
+  text-decoration: underline; /* Underline on hover */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .dealersList {
+    padding: 10px;
+  }
+
+  .dealerItem {
+    padding: 10px;
+    margin-bottom: 8px;
+  }
+
+  .icon {
+    width: 18px;
+    height: 18px;
+  }
+}
