@@ -75,12 +75,13 @@ function NearbyProductsCart() {
   };
 
   const handleProceedToPay = () => {
-    navigate('/checkout-nearby'); // Navigate to a different checkout page for nearby products
+    navigate('/nearby/checkout'); // Navigate to the NearbyCheckout page
   };
 
   if (cartItems.length === 0) {
     return <p>Your nearby cart is empty</p>;
   }
+
 
   return (
     <div>
