@@ -59,5 +59,12 @@
   .signinButton a {
     color: white;
   }
+  .userMenu {
+    display: flex;
+    flex-direction: column; /* Display items vertically */
+  }
   
+  .menuItem {
+    margin-bottom: 10px; /* Add margin between items */
+  }
   

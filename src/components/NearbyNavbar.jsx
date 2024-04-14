@@ -73,12 +73,21 @@ function NearbyNavbar() {
             <div className={styles.userName} onClick={() => setShowMenu(!showMenu)}>
               {userName}
               {showMenu && (
-                <div className={styles.userMenu}>
-                  <Link to="/profile" className={styles.menuItem}>Profile</Link>
-                  <Link to="/orders" className={styles.menuItem}>Orders</Link>
-                  <Link to="/help" className={styles.menuItem}>Help</Link>
-                  <button onClick={handleLogout} className={styles.menuItem}>Sign Out</button>
-                </div>
+  <div className={styles.userMenu}>
+    <div className={styles.menuItem}>
+      <Link to="/profile">Profile</Link>
+    </div>
+    <div className={styles.menuItem}>
+      <Link to="/orders">Orders</Link>
+    </div>
+    <div className={styles.menuItem}>
+      <Link to="/help">Help</Link>
+    </div>
+    <div className={styles.menuItem}>
+      <button onClick={handleLogout}>Sign Out</button>
+    </div>
+  </div>
+
               )}
             </div>
           ) : (

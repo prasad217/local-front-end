@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import styles from './DealerProducts.module.css'; // Import CSS module
+import styles from './DealerProducts.module.css'; // Import CSS module for styling
 
 function DealerProducts() {
   const [products, setProducts] = useState([]);
@@ -27,7 +27,7 @@ function DealerProducts() {
     fetchDealerProducts();
   }, [dealerId]);
 
-  const addToNearbyCart = async (productId) => {
+  const addToNearbyCart = async (productId, dealerId) => {
     try {
       const response = await fetch('http://localhost:3001/api/nearby/cart', {
         method: 'POST',
@@ -35,13 +35,46 @@ function DealerProducts() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ productId }),
+        body: JSON.stringify({ productId, dealerId }),
       });
-      const data = await response.json();
-      alert(data.message); // Display an alert with the response message
+      if (response.status === 409) {  // Conflict status indicates a different dealer's product
+        const result = await response.json();
+        if (result.actionRequired === 'replace') {
+          const replaceConfirmed = window.confirm(result.error + " Do you want to replace the cart?");
+          if (replaceConfirmed) {
+            replaceCart(productId, dealerId); // Call replaceCart if user confirms
+          }
+        }
+      } else if (!response.ok) {
+        throw new Error(`Failed to add: ${response.statusText}`);
+      } else {
+        const data = await response.json();
+        alert(data.message); // Success message
+      }
     } catch (error) {
       console.error('Error adding product to nearby cart:', error);
       alert('Failed to add product to nearby cart. Please try again later.');
+    }
+  };
+
+  const replaceCart = async (productId, dealerId) => {
+    try {
+      const response = await fetch('http://localhost:3001/api/nearby/cart/replace', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ productId, dealerId }),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to replace cart');
+      }
+      const data = await response.json();
+      alert(data.message); // Notify user
+    } catch (error) {
+      console.error('Error replacing cart:', error);
+      alert('Error replacing the cart: ' + error.message);
     }
   };
 
@@ -59,7 +92,7 @@ function DealerProducts() {
             <h2>{product.name}</h2>
             <p>Price: ₹{product.actual_cost}</p>
             <p>Discount Price: ₹{product.discount_price}</p>
-            <button onClick={() => addToNearbyCart(product.id)} className={styles.addToCartButton}>
+            <button onClick={() => addToNearbyCart(product.id, dealerId)} className={styles.addToCartButton}>
               Add to Nearby Cart
             </button>
           </div>

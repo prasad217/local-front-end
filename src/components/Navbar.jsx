@@ -98,11 +98,7 @@ function Navbar() {
               <Link to="/signin">Sign In</Link>
             </div>
           )}
-          <div className="navRight">
-            <Link to="/dealers/nearby" className="nearbyStoresButton">
-              Get Nearby Stores
-            </Link>
-          </div>
+         
         </div>
       </div>
     </nav>
