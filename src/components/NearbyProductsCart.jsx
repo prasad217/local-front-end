@@ -23,13 +23,15 @@ function NearbyProductsCart() {
       setCartItems(data);
     } catch (error) {
       console.error('Error fetching nearby cart items:', error);
+      alert('Failed to fetch cart items.');
     }
   };
 
   const updateCartItemQuantity = async (productId, newQuantity, dealerId) => {
+    if (newQuantity < 1) return;  // Prevent reducing quantity below 1 without deleting the item
     const quantity = Math.max(newQuantity, 1); // Ensure quantity never goes below 1
     try {
-      // Check if any existing items in the cart belong to a different dealer
+      // Handle different dealer scenario
       const hasDifferentDealer = cartItems.some(item => item.dealerId !== dealerId);
       if (hasDifferentDealer) {
         const replaceConfirmed = window.confirm('Adding products from a different dealer will replace your current items. Do you want to proceed?');
@@ -38,7 +40,6 @@ function NearbyProductsCart() {
         }
       }
 
-      // If the user confirms or there are no existing items, update the quantity of the cart item
       const response = await fetch(`http://localhost:3001/api/nearby/cart/items/${productId}`, {
         method: 'PATCH',
         credentials: 'include',
@@ -53,6 +54,7 @@ function NearbyProductsCart() {
       fetchNearbyCartItems(); // Refresh cart items after update
     } catch (error) {
       console.error('Error updating cart item quantity:', error);
+      alert('Failed to update quantity.');
     }
   };
 
@@ -71,6 +73,7 @@ function NearbyProductsCart() {
       fetchNearbyCartItems(); // Refresh cart items after deletion
     } catch (error) {
       console.error('Error deleting cart item:', error);
+      alert('Failed to remove item.');
     }
   };
 
@@ -81,7 +84,6 @@ function NearbyProductsCart() {
   if (cartItems.length === 0) {
     return <p>Your nearby cart is empty</p>;
   }
-
 
   return (
     <div>
@@ -112,4 +114,3 @@ function NearbyProductsCart() {
 }
 
 export default NearbyProductsCart;
-

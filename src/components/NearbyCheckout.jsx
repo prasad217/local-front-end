@@ -18,6 +18,7 @@ function NearbyCheckout() {
   });
   const [error, setError] = useState('');
   const [showAddressForm, setShowAddressForm] = useState(false);
+  const [deliveryOption, setDeliveryOption] = useState('doorDelivery'); // State to handle delivery options
 
   // Fetch addresses and cart items
   useEffect(() => {
@@ -103,9 +104,10 @@ function NearbyCheckout() {
 
   const placeOrder = () => {
     const orderDetails = {
-      addressId: selectedAddress,
+      addressId: deliveryOption === 'doorDelivery' ? selectedAddress : null,
       items: cartItems.map(item => ({ productId: item.product_id, quantity: item.quantity })),
       totalPrice: totalPrice,
+      deliveryOption: deliveryOption,
     };
   
     fetch('http://localhost:3001/api/nearby/orders', {
@@ -125,7 +127,7 @@ function NearbyCheckout() {
     .then(data => {
       console.log("Order placed successfully", data);
       setCartItems([]); // Clear the cart
-      navigate('/order-confirmation'); // Navigate to confirmation page
+      navigate('/nearby/order-confirmation'); // Navigate to confirmation page
     })
     .catch(error => {
       console.error('Error:', error);
@@ -138,35 +140,59 @@ function NearbyCheckout() {
       {error && <div style={{ color: 'red' }}>{error}</div>}
       
       {addresses.length > 0 && (
-  <div>
-    <h2>Available Addresses</h2>
-    {addresses.map((addr) => (
-      <div key={addr.id} style={{ marginBottom: "20px", border: "1px solid #ccc", padding: "10px" }}>
-        <input
-          type="radio"
-          id={`address-${addr.id}`}
-          name="selectedAddress"
-          value={addr.id ? addr.id.toString() : ''}
-          checked={selectedAddress === (addr.id ? addr.id.toString() : '')}
-          onChange={handleSelectAddress}
-          style={{ marginRight: "10px" }}
-        />
-        <label htmlFor={`address-${addr.id}`}>
-          Select This Address
-        </label>
-        <div><strong>Name:</strong> {addr.name}</div>
-        <div><strong>Door No:</strong> {addr.door_no},</div>
-        <div><strong>Address Lane:</strong> {addr.address_lane},</div>
-        <div><strong>Landmark:</strong> {addr.landmark},</div>
-        <div><strong>Pincode:</strong> {addr.pincode},</div>
-        <div><strong>City:</strong> {addr.city},</div>
-        <div><strong>State:</strong> {addr.state}</div>
-        <div><strong>Phone Number:</strong> {addr.phonenumber}</div>
-      </div>
-    ))}
-  </div>
-)}
+        <div>
+          <h2>Available Addresses</h2>
+          {addresses.map((addr) => (
+            <div key={addr.id} style={{ marginBottom: "20px", border: "1px solid #ccc", padding: "10px" }}>
+              <input
+                type="radio"
+                id={`address-${addr.id}`}
+                name="selectedAddress"
+                value={addr.id ? addr.id.toString() : ''}
+                checked={selectedAddress === (addr.id ? addr.id.toString() : '')}
+                onChange={handleSelectAddress}
+                style={{ marginRight: "10px" }}
+              />
+              <label htmlFor={`address-${addr.id}`}>
+                Select This Address
+              </label>
+              <div><strong>Name:</strong> {addr.name}</div>
+              <div><strong>Door No:</strong> {addr.door_no},</div>
+              <div><strong>Address Lane:</strong> {addr.address_lane},</div>
+              <div><strong>Landmark:</strong> {addr.landmark},</div>
+              <div><strong>Pincode:</strong> {addr.pincode},</div>
+              <div><strong>City:</strong> {addr.city},</div>
+              <div><strong>State:</strong> {addr.state}</div>
+              <div><strong>Phone Number:</strong> {addr.phonenumber}</div>
+            </div>
+          ))}
+        </div>
+      )}
 
+      {/* Delivery Options */}
+      <div>
+        <h2>Delivery Options</h2>
+        <label>
+          <input
+            type="radio"
+            name="deliveryOption"
+            value="doorDelivery"
+            checked={deliveryOption === 'doorDelivery'}
+            onChange={() => setDeliveryOption('doorDelivery')}
+          />
+          Door Delivery
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="deliveryOption"
+            value="inStorePickup"
+            checked={deliveryOption === 'inStorePickup'}
+            onChange={() => setDeliveryOption('inStorePickup')}
+          />
+          In-store Pickup
+        </label>
+      </div>
 
       <button onClick={() => setShowAddressForm(true)} style={{ margin: "20px 0" }}>Add New Address</button>
 

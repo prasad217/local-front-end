@@ -6,6 +6,8 @@ function DealerHome() {
   const [products, setProducts] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [formMessage, setFormMessage] = useState('');
+  const [nearbyOrders, setNearbyOrders] = useState([]);
+  const [dealerOrders, setDealerOrders] = useState([]);
 
   const fetchProducts = useCallback(async () => {
     try {
@@ -24,27 +26,76 @@ function DealerHome() {
     }
   }, [dealerInfo.dealerId]);
 
-  useEffect(() => {
-    const fetchDealerInfo = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/dealer/info', {
-          method: 'GET',
-          credentials: 'include',
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setDealerInfo(data);
-          fetchProducts(); // Fetch products after fetching dealer info
-        } else {
-          console.error('Failed to fetch dealer info: Response was not ok.');
-        }
-      } catch (error) {
-        console.error('Error fetching dealer info:', error.message);
+  const fetchDealerInfo = useCallback(async () => {
+    try {
+      const response = await fetch('http://localhost:3001/dealer/info', {
+        method: 'GET',
+        credentials: 'include',
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setDealerInfo(data);
+        fetchProducts(); // Fetch products after fetching dealer info
+      } else {
+        console.error('Failed to fetch dealer info: Response was not ok.');
       }
-    };
-
-    fetchDealerInfo();
+    } catch (error) {
+      console.error('Error fetching dealer info:', error.message);
+    }
   }, [fetchProducts]);
+
+  const fetchNearbyOrders = useCallback(async () => {
+    try {
+      const response = await fetch('http://localhost:3001/api/nearby/orders', {
+        method: 'GET',
+        credentials: 'include',
+      });
+      if (response.ok) {
+        const data = await response.json();
+        if (data.length > 0) {
+          // Trigger notification for new nearby orders
+          if ('Notification' in window && Notification.permission === 'granted') {
+            new Notification(`New nearby order received`);
+          } else if ('Notification' in window && Notification.permission !== 'denied') {
+            Notification.requestPermission().then(function(permission) {
+              if (permission === 'granted') {
+                new Notification(`New nearby order received`);
+              }
+            });
+          }
+        }
+        setNearbyOrders(data);
+      } else {
+        console.error('Failed to fetch nearby orders');
+      }
+    } catch (error) {
+      console.error('Error fetching nearby orders:', error.message);
+    }
+  }, []);
+
+  const fetchDealerOrders = useCallback(async () => {
+    try {
+      const response = await fetch('http://localhost:3001/dealer/orders', {
+        method: 'GET',
+        credentials: 'include',
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setDealerOrders(data);
+      } else {
+        console.error('Failed to fetch dealer orders');
+      }
+    } catch (error) {
+      console.error('Error fetching dealer orders:', error.message);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchDealerInfo();
+    fetchNearbyOrders();
+    fetchDealerOrders();
+  }, [fetchDealerInfo, fetchNearbyOrders, fetchDealerOrders]);
+
   const handleImageTypeChange = (event) => {
     const imageInputContainer = document.getElementById('uploadImageContainer');
     const imageUrlInputContainer = document.getElementById('imageUrlContainer');
@@ -56,6 +107,7 @@ function DealerHome() {
       imageUrlInputContainer.style.display = 'block'; // Show the URL input
     }
   };
+
   const handleLogout = async () => {
     try {
       const response = await fetch('http://localhost:3001/dealer/logout', {
@@ -96,7 +148,7 @@ function DealerHome() {
     }
   };
 
-  const deleteproduct = async (productId) => {
+  const deleteProduct = async (productId) => {
     try {
       const response = await fetch(`http://localhost:3001/api/dealer/products/${productId}`, {
         method: 'DELETE',
@@ -116,95 +168,92 @@ function DealerHome() {
     }
   };
   
-  
-
   return (
     <div className="container">
       <button onClick={handleLogout}>Logout</button>
       <Link to="/dealer/orders">
-  <button>View Orders</button>
-</Link>
+        <button>View Orders</button>
+      </Link>
       <h2>Welcome, {dealerInfo.name || 'Dealer'}!</h2>
       {formMessage && <p>{formMessage}</p>}
       <button id="add-product-btn" onClick={() => setShowForm(!showForm)}>
         {showForm ? 'Cancel' : 'Add Product'}
       </button>
       {showForm && (
-       <form id="add-product-form" onSubmit={addProduct} encType="multipart/form-data">
-       <div>
-        <label htmlFor="name">Product Name:</label>
-        <input type="text" id="name" name="name" required />
-      </div>
-      <div>
-      <label htmlFor="imageType">Image Type:</label>
-        <select
-            id="imageType"
-            name="imageType"
-            required
-            onChange={handleImageTypeChange}
-          >
-            <option value="upload">Upload Image</option>
-            <option value="url">Image URL</option>
-          </select>
-        </div>
-        
-        <div id="uploadImageContainer" style={{ display: 'none' }}>
-          <label htmlFor="image">Upload Image:</label>
-          <input type="file" id="image" name="image" accept="image/*" />
-        </div>
-
-        <div id="imageUrlContainer" style={{ display: 'none' }}>
-          <label htmlFor="imageUrlInput">Image URL:</label>
-          <input type="url" id="imageUrlInput" name="imageUrlInput" />
-        </div>
-
-
-      <div>
-        <label htmlFor="actualCost">Actual Cost:</label>
-        <input
-          type="number"
-          id="actualCost"
-          name="actualCost"
-          step="0.01"
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="discountPrice">Discount Price:</label>
-        <input
-          type="number"
-          id="discountPrice"
-          name="discountPrice"
-          step="0.01"
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="instockqty">In Stock Quantity:</label>
-        <input type="number" id="instockqty" name="instockqty" required />
-      </div>
-      
-      <div>
-        <label htmlFor="category">Category:</label>
-        <select id="category" name="category" required>
-          <option value="">Select category</option>
-          <option value="home-appliances">Home Appliances</option>
-          <option value="electronics">Electronics</option>
-          <option value="laptops">Laptops</option>
-          <option value="mobiles">Mobiles</option>
-          <option value="fashion">Clothing</option>
-          <option value="medicines">MediCart</option>
-          <option value="toystore">Toystore</option>
-          <option value="grocery">Grocery</option>
-        </select>
-      </div>
-
-      <div>
-        <label htmlFor="description">Description:</label>
-        <textarea id="description" name="description" rows="4" cols="50"></textarea>
-      </div>
-      <button type="submit">Add Product</button>
-      </form>
+        <form id="add-product-form" onSubmit={addProduct} encType="multipart/form-data">
+          <div>
+            <label htmlFor="name">Product Name:</label>
+            <input type="text" id="name" name="name" required />
+          </div>
+          <div>
+            <label htmlFor="imageType">Image Type:</label>
+            <select
+              id="imageType"
+              name="imageType"
+              required
+              onChange={handleImageTypeChange}
+            >
+              <option value="upload">Upload Image</option>
+              <option value="url">Image URL</option>
+            </select>
+          </div>
+          
+          <div id="uploadImageContainer" style={{ display: 'none' }}>
+            <label htmlFor="image">Upload Image:</label>
+            <input type="file" id="image" name="image" accept="image/*" />
+          </div>
+  
+          <div id="imageUrlContainer" style={{ display: 'none' }}>
+            <label htmlFor="imageUrlInput">Image URL:</label>
+            <input type="url" id="imageUrlInput" name="imageUrlInput" />
+          </div>
+  
+          <div>
+            <label htmlFor="actualCost">Actual Cost:</label>
+            <input
+              type="number"
+              id="actualCost"
+              name="actualCost"
+              step="0.01"
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor="discountPrice">Discount Price:</label>
+            <input
+              type="number"
+              id="discountPrice"
+              name="discountPrice"
+              step="0.01"
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor="instockqty">In Stock Quantity:</label>
+            <input type="number" id="instockqty" name="instockqty" required />
+          </div>
+          
+          <div>
+            <label htmlFor="category">Category:</label>
+            <select id="category" name="category" required>
+              <option value="">Select category</option>
+              <option value="home-appliances">Home Appliances</option>
+              <option value="electronics">Electronics</option>
+              <option value="laptops">Laptops</option>
+              <option value="mobiles">Mobiles</option>
+              <option value="fashion">Clothing</option>
+              <option value="medicines">MediCart</option>
+              <option value="toystore">Toystore</option>
+              <option value="grocery">Grocery</option>
+            </select>
+          </div>
+  
+          <div>
+            <label htmlFor="description">Description:</label>
+            <textarea id="description" name="description" rows="4" cols="50"></textarea>
+          </div>
+          <button type="submit">Add Product</button>
+        </form>
       )}
       <h3>Products Uploaded</h3>
       <table>
@@ -232,14 +281,36 @@ function DealerHome() {
               <td>{product.instockqty}</td>
               <td>
                 <button>Edit Stock</button>
-                <button onClick={() => deleteproduct(product.id)}>Remove</button>
-
+                <button onClick={() => deleteProduct(product.id)}>Remove</button>
                 <button>Change Price</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      <h3>Nearby Orders</h3>
+      <div>
+        {nearbyOrders.map((order, index) => (
+          <div key={index}>
+            {index === 0 || nearbyOrders[index - 1].orderId !== order.orderId ? (
+              <div>
+                <p>Order ID: {order.orderId}</p>
+                {order.products.map(product => (
+                  <div key={product.productId}>
+                    <p>Product: {product.name} (Quantity: {product.quantity})</p>
+                    <p>Total Price: ${product.totalPrice.toFixed(2)}</p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div>
+                <p>Product: {order.products[0].name} (Quantity: {order.products[0].quantity})</p>
+                <p>Total Price: ${order.products[0].totalPrice.toFixed(2)}</p>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

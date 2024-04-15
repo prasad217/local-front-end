@@ -32,12 +32,10 @@ const ToggleSwitch = () => {
           align-items: center;
           background-color: #333;
           border-radius: 20px;
-          padding: 5px;
         }
 
         .toggle-option {
-          padding: 10px 20px;
-          border-radius: 15px;
+          padding: 10px ;
           color: white;
           background-color: black;
           cursor: pointer;

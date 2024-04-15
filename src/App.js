@@ -25,6 +25,7 @@ import DealerProducts from './components/DealerProducts';
 import NearbyNavbar from './components/NearbyNavbar';
 import NearbyProductsCart from './components/NearbyProductsCart';
 import NearbyCheckout from './components/NearbyCheckout';
+import NearbyOrderConfirmation from './components/NearbyOrderConfirmation';
 function App() {
   return (
     <Router>
@@ -49,6 +50,7 @@ function App() {
         <Route path="/dealers/:dealerId/products" element={<DealerProducts />} />
         <Route path="/nearby/cart" element={<NearbyProductsCart />} />
         <Route path="/nearby/checkout" element={<NearbyCheckout />} />
+        <Route path="/nearby/order-confirmation" element={<NearbyOrderConfirmation />} />
       </Routes>
     </Router>
   );

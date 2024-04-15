@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import ToggleSwitch from './ToggleSwitch';
 import cartIcon from './images/nearbycart.png'; // Ensure the image path is correct
 import styles from './NearbyNavbar.module.css'; // Updated to import as a module
 function NearbyNavbar() {
@@ -49,12 +50,17 @@ function NearbyNavbar() {
   const shouldRenderNavbar = () => {
     const allowedPaths = [
       '/dealers/nearby',
-      '/dealers/1/products' // Adjust if needed
+      '/dealers/:id/products',
+      '/nearby/cart' ,
+      '/nearby/checkout',
+      '/nearby/order-confirmation'
     ];
-
-    return allowedPaths.some(path => 
-      location.pathname === path || location.pathname.match(new RegExp(path.replace(/:\w+/g, '\\d+')))
-    );
+  
+    return allowedPaths.some(path => {
+      // Replace path parameters like :id with regex to match any number
+      const regex = new RegExp("^" + path.replace(/:\w+/g, '\\d+') + "$");
+      return regex.test(location.pathname);
+    });
   };
 
   if (!shouldRenderNavbar()) {
@@ -65,6 +71,7 @@ function NearbyNavbar() {
     <nav className={styles.nearbyNavbar}>
       <div className={styles.container}>
         <h1 className={styles.title}>Nearby Dealers</h1>
+        <ToggleSwitch />
         <div className={styles.navRight}>
           <Link to="/nearby/cart">
             <img src={cartIcon} alt="Cart" className={styles.cartIcon} />
