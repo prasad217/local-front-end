@@ -22,8 +22,10 @@
 .product-card img {
   width: 100%; /* Make the image width 100% of the product card */
   height: 200px; /* Set a fixed height to ensure all images are the same size */
-  object-fit: cover; /* Cover the area without breaking the aspect ratio */
+  object-fit: contain; /* Make sure the entire image fits within the bounds without cropping */
+  background-color: #f4f4f4; /* Optional: Adds a background color to fill empty space around images */
 }
+
 
 .product-card h2, .product-card p {
   text-align: center; /* Center-align text */

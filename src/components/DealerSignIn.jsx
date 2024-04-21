@@ -5,9 +5,12 @@ function DealerSignIn() {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
+    otp: ''
   });
+  const [needOTP, setNeedOTP] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const navigate = useNavigate(); // Initialize useNavigate instead of useHistory
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -19,22 +22,32 @@ function DealerSignIn() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const url = needOTP ? 'http://localhost:3001/dealer/verify-otp' : 'http://localhost:3001/dealer/signin';
     try {
-      // Updated fetch request with credentials: 'include'
-      const response = await fetch('http://localhost:3001/dealer/signin', {
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include', // Ensures cookies are sent with the request
+        credentials: 'include',
         body: JSON.stringify(formData)
       });
 
-      if (!response.ok) throw new Error('Failed to sign in');
-      console.log('Dealer signed in successfully');
-      navigate('/dealerhome'); // Redirect to Dealer Home after successful sign-in
+      const data = await response.json();
+
+      if (!response.ok) {
+        setErrorMessage(data.error || 'Failed to sign in');
+        if (data.resendOTP) {
+          setNeedOTP(true); // Ensure OTP input is shown
+        }
+        return; // Exit the function if there is an error
+      }
+
+      console.log(data.message); // Log the successful message
+      navigate('/dealerhome'); // Redirect after success
     } catch (error) {
       console.error('Error signing in dealer:', error);
+      setErrorMessage('Network error or server is not responding.');
     }
   };
 
@@ -64,11 +77,27 @@ function DealerSignIn() {
             onChange={handleInputChange}
           />
         </div>
-        <button type="submit">Sign In</button>
+        {needOTP && (
+          <div>
+            <label htmlFor="otp">OTP:</label>
+            <input
+              type="text"
+              id="otp"
+              name="otp"
+              required
+              value={formData.otp}
+              onChange={handleInputChange}
+            />
+          </div>
+        )}
+        <button type="submit">{needOTP ? 'Verify OTP' : 'Sign In'}</button>
       </form>
-      <div>
-        <p>Don't have an account? <Link to="/dealer/register">Register</Link></p>
-      </div>
+      {errorMessage && <p className="error">{errorMessage}</p>}
+      {!needOTP && (
+        <div>
+          <p>Don't have an account? <Link to="/dealer/register">Register</Link></p>
+        </div>
+      )}
     </div>
   );
 }

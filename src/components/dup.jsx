@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styles from './DealerRegistration.module.css';
 
 function DealerRegistration() {
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -13,36 +11,39 @@ function DealerRegistration() {
     address: '',
     locationLink: '',
     shopName: '',
-    shopGST: ''
+    shopGST: '',
+    shopPhoto: null,
+    storeType: '',
+    otp: ''
   });
-  const [stage, setStage] = useState(1); // 1: Data entry, 2: OTP verification
+  const [stage, setStage] = useState(1);  // 1: Data entry, 2: OTP verification
 
   useEffect(() => {
     getLocation();
   }, []);
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({ ...prevState, [name]: value }));
+    const { name, value, type } = e.target;
+    const newValue = type === 'file' ? e.target.files[0] : value;
+    setFormData(prevState => ({ ...prevState, [name]: newValue }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.password) {
-      console.error('Password is required');
-      return; // Prevent the form submission if password is missing
-    }
     if (stage === 1) {
+      const formDataToSend = new FormData();
+      Object.entries(formData).filter(([key]) => key !== 'otp').forEach(([key, value]) => {
+        formDataToSend.append(key, value);
+      });
       try {
-        const response = await fetch('http://localhost:3001/dealer/register', {
+        const response = await fetch('http://localhost:3001/dealer/send-otp', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData)
+          body: formDataToSend,
         });
-        if (!response.ok) throw new Error('Failed to register dealer');
-        setStage(2); // Move to OTP verification stage
+        if (!response.ok) throw new Error('Failed to send OTP');
+        setStage(2);  // Move to OTP verification stage
       } catch (error) {
-        console.error('Error registering dealer:', error);
+        console.error('Error sending OTP:', error);
       }
     } else {
       verifyOtp();
@@ -53,20 +54,16 @@ function DealerRegistration() {
     try {
       const response = await fetch('http://localhost:3001/dealer/verify-otp', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: formData.email, otp: formData.otp })
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ email: formData.email, otp: formData.otp }),
       });
-      if (!response.ok) {
-        throw new Error('OTP verification failed');
-      }
-      const data = await response.json();
-      console.log(data.message); // Assuming a success message is returned
-      navigate('/dealersignin');
+      if (!response.ok) throw new Error('OTP verification failed');
+      console.log('Dealer registered successfully');
+      // Optionally reset form or redirect user
     } catch (error) {
       console.error('Error verifying OTP:', error);
     }
   };
-  
 
   const getLocation = () => {
     if (navigator.geolocation) {
@@ -75,7 +72,7 @@ function DealerRegistration() {
           const latitude = position.coords.latitude;
           const longitude = position.coords.longitude;
           const locationLink = `https://www.google.com/maps?q=${latitude},${longitude}`;
-          setFormData((prevState) => ({ ...prevState, locationLink }));
+          setFormData(prevState => ({ ...prevState, locationLink }));
         },
         (error) => {
           console.error('Error getting user location:', error);
@@ -116,16 +113,14 @@ function DealerRegistration() {
                 <input type="number" id="age" name="age" required onChange={handleInputChange} />
               </div>
             </div>
-
+  
             <div className={styles.template}>
               <h3>Location</h3>
               <div className="form-group">
                 <label htmlFor="location">Location:</label>
                 <span id="user-location">
                   {formData.locationLink ? (
-                    <a href={formData.locationLink} target="_blank" rel="noopener noreferrer">
-                      View your location
-                    </a>
+                    <a href={formData.locationLink} target="_blank" rel="noopener noreferrer">View your location</a>
                   ) : (
                     'Fetching user location...'
                   )}
@@ -137,7 +132,7 @@ function DealerRegistration() {
               </div>
               <input type="hidden" id="location-link" name="locationLink" value={formData.locationLink} />
               <div className="form-group">
-                <label htmlFor="shopName">Shop Name:</label>
+                <label htmlFor="shopName">Shop Name:</label
                 <input type="text" id="shopName" name="shopName" required onChange={handleInputChange} />
               </div>
             </div>
@@ -147,6 +142,10 @@ function DealerRegistration() {
               <div className="form-group">
                 <label htmlFor="shopGST">Shop GST No:</label>
                 <input type="text" id="shopGST" name="shopGST" onChange={handleInputChange} />
+              </div>
+              <div className="form-group">
+                <label htmlFor="shopPhoto">Shop License:</label>
+                <input type="file" id="shopPhoto" name="shopPhoto" accept="image/*" onChange={handleInputChange} />
               </div>
             </div>
             <button type="submit">Send OTP</button>
