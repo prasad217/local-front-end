@@ -16,6 +16,7 @@ function DealerRegistration() {
     shopGST: ''
   });
   const [stage, setStage] = useState(1); // 1: Data entry, 2: OTP verification
+  const [error, setError] = useState('');
 
   useEffect(() => {
     getLocation();
@@ -26,11 +27,20 @@ function DealerRegistration() {
     setFormData((prevState) => ({ ...prevState, [name]: value }));
   };
 
+  const isValidGSTIN = (gst) => {
+    const pattern = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}[Z]{1}[0-9A-Z]{1}$/;
+    return pattern.test(gst);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.password) {
       console.error('Password is required');
       return; // Prevent the form submission if password is missing
+    }
+    if (!isValidGSTIN(formData.shopGST)) {
+      setError('Invalid GST number format');
+      return;
     }
     if (stage === 1) {
       try {
@@ -43,6 +53,7 @@ function DealerRegistration() {
         setStage(2); // Move to OTP verification stage
       } catch (error) {
         console.error('Error registering dealer:', error);
+        setError('Failed to register dealer. Please check your input.');
       }
     } else {
       verifyOtp();
@@ -66,7 +77,6 @@ function DealerRegistration() {
       console.error('Error verifying OTP:', error);
     }
   };
-  
 
   const getLocation = () => {
     if (navigator.geolocation) {
@@ -91,6 +101,7 @@ function DealerRegistration() {
     <div className={styles.container}>
       <h2>Dealer Registration</h2>
       <form onSubmit={handleSubmit}>
+        {error && <p className={styles.error}>{error}</p>}
         {stage === 1 && (
           <>
             <div className={styles.template}>

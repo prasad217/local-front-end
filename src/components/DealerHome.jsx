@@ -8,7 +8,8 @@ function DealerHome() {
   const [formMessage, setFormMessage] = useState('');
   const [nearbyOrders, setNearbyOrders] = useState([]);
   const [dealerOrders, setDealerOrders] = useState([]);
-
+  const [imageType, setImageType] = useState('upload'); // Default to 'upload'
+  
   const fetchProducts = useCallback(async () => {
     try {
       const response = await fetch(`http://localhost:3001/dealer/products/${dealerInfo.dealerId}`, {
@@ -97,14 +98,15 @@ function DealerHome() {
   }, [fetchDealerInfo, fetchNearbyOrders, fetchDealerOrders]);
 
   const handleImageTypeChange = (event) => {
+    setImageType(event.target.value);
     const imageInputContainer = document.getElementById('uploadImageContainer');
     const imageUrlInputContainer = document.getElementById('imageUrlContainer');
     if (event.target.value === 'upload') {
-      imageInputContainer.style.display = 'block'; // Show the upload input
-      imageUrlInputContainer.style.display = 'none'; // Hide the URL input
+      imageInputContainer.style.display = 'block';
+      imageUrlInputContainer.style.display = 'none';
     } else {
-      imageInputContainer.style.display = 'none'; // Hide the upload input
-      imageUrlInputContainer.style.display = 'block'; // Show the URL input
+      imageInputContainer.style.display = 'none';
+      imageUrlInputContainer.style.display = 'block';
     }
   };
 
@@ -127,7 +129,6 @@ function DealerHome() {
   const addProduct = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
-
     try {
       const response = await fetch('http://localhost:3001/dealer/addProduct', {
         method: 'POST',
@@ -136,14 +137,13 @@ function DealerHome() {
       });
       if (response.ok) {
         setFormMessage('Product added successfully');
-        event.target.reset(); // Reset form after successful submission
-        setShowForm(false); // Optionally hide form
-        fetchProducts(); // Fetch updated product list
+        setShowForm(false);
+        fetchProducts(dealerInfo.dealerId); // Refresh products list
       } else {
         setFormMessage('Failed to add product');
       }
     } catch (error) {
-      console.error('Error adding product:', error.message);
+      console.error('Error adding product:', error);
       setFormMessage('Error adding product: ' + error.message);
     }
   };
@@ -157,17 +157,17 @@ function DealerHome() {
           'Content-Type': 'application/json',
         },
       });
-  
-      if (!response.ok) {
-        throw new Error('Failed to delete product');
+
+      if (response.ok) {
+        fetchProducts(); // Refresh products after deletion
+      } else {
+        console.error('Failed to delete product');
       }
-  
-      fetchProducts(); // Refresh products after deletion
     } catch (error) {
       console.error('Error deleting product:', error);
     }
   };
-  
+
   return (
     <div className="container">
       <button onClick={handleLogout}>Logout</button>
@@ -180,80 +180,62 @@ function DealerHome() {
         {showForm ? 'Cancel' : 'Add Product'}
       </button>
       {showForm && (
-        <form id="add-product-form" onSubmit={addProduct} encType="multipart/form-data">
-          <div>
-            <label htmlFor="name">Product Name:</label>
-            <input type="text" id="name" name="name" required />
-          </div>
-          <div>
-            <label htmlFor="imageType">Image Type:</label>
-            <select
-              id="imageType"
-              name="imageType"
-              required
-              onChange={handleImageTypeChange}
-            >
-              <option value="upload">Upload Image</option>
-              <option value="url">Image URL</option>
-            </select>
-          </div>
-          
-          <div id="uploadImageContainer" style={{ display: 'none' }}>
-            <label htmlFor="image">Upload Image:</label>
-            <input type="file" id="image" name="image" accept="image/*" />
-          </div>
-  
-          <div id="imageUrlContainer" style={{ display: 'none' }}>
-            <label htmlFor="imageUrlInput">Image URL:</label>
-            <input type="url" id="imageUrlInput" name="imageUrlInput" />
-          </div>
-  
-          <div>
-            <label htmlFor="actualCost">Actual Cost:</label>
-            <input
-              type="number"
-              id="actualCost"
-              name="actualCost"
-              step="0.01"
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="discountPrice">Discount Price:</label>
-            <input
-              type="number"
-              id="discountPrice"
-              name="discountPrice"
-              step="0.01"
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="instockqty">In Stock Quantity:</label>
-            <input type="number" id="instockqty" name="instockqty" required />
-          </div>
-          
-          <div>
-            <label htmlFor="category">Category:</label>
-            <select id="category" name="category" required>
-              <option value="">Select category</option>
-              <option value="home-appliances">Home Appliances</option>
-              <option value="electronics">Electronics</option>
-              <option value="laptops">Laptops</option>
-              <option value="mobiles">Mobiles</option>
-              <option value="fashion">Clothing</option>
-              <option value="medicines">MediCart</option>
-              <option value="toystore">Toystore</option>
-              <option value="grocery">Grocery</option>
-            </select>
-          </div>
-  
-          <div>
-            <label htmlFor="description">Description:</label>
-            <textarea id="description" name="description" rows="4" cols="50"></textarea>
-          </div>
-          <button type="submit">Add Product</button>
-        </form>
+       <form onSubmit={addProduct} encType="multipart/form-data">
+       <div>
+         <label htmlFor="name">Product Name:</label>
+         <input type="text" id="name" name="name" required />
+       </div>
+       <div>
+         <label htmlFor="imageType">Image Type:</label>
+         <select id="imageType" name="imageType" required onChange={handleImageTypeChange}>
+           <option value="upload">Upload Image</option>
+           <option value="url">Image URL</option>
+         </select>
+       </div>
+       {imageType === 'upload' && (
+         <div>
+           <label htmlFor="image">Upload Image:</label>
+           <input type="file" id="image" name="image" accept="image/*" />
+         </div>
+       )}
+       {imageType === 'url' && (
+         <div>
+           <label htmlFor="imageUrlInput">Image URL:</label>
+           <input type="url" id="imageUrlInput" name="imageUrlInput" />
+         </div>
+       )}
+       <div>
+         <label htmlFor="actualCost">Actual Cost:</label>
+         <input type="number" id="actualCost" name="actualCost" step="0.01" required />
+       </div>
+       <div>
+         <label htmlFor="discountPrice">Discount Price:</label>
+         <input type="number" id="discountPrice" name="discountPrice" step="0.01" required />
+       </div>
+       <div>
+         <label htmlFor="instockqty">In Stock Quantity:</label>
+         <input type="number" id="instockqty" name="instockqty" required />
+       </div>
+       <div>
+         <label htmlFor="category">Category:</label>
+         <select id="category" name="category" required>
+           <option value="">Select category</option>
+           <option value="home-appliances">Home Appliances</option>
+           <option value="electronics">Electronics</option>
+           <option value="laptops">Laptops</option>
+           <option value="mobiles">Mobiles</option>
+           <option value="fashion">Clothing</option>
+           <option value="medicines">MediCart</option>
+           <option value="toystore">Toystore</option>
+           <option value="grocery">Grocery</option>
+         </select>
+       </div>
+       <div>
+         <label htmlFor="description">Description:</label>
+         <textarea id="description" name="description" rows="4" cols="50"></textarea>
+       </div>
+       <button type="submit">Add Product</button>
+     </form>
       )}
       <h3>Products Uploaded</h3>
       <table>
