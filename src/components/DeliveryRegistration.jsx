@@ -82,6 +82,7 @@ function DeliveryRegistration() {
           <form onSubmit={verifyOtp}>
             <input type="text" placeholder="Enter OTP" value={otp} onChange={handleOtpChange} />
             <button type="submit">Verify OTP</button>
+            <DeliveryRegistration />
           </form>
         </>
       )}
