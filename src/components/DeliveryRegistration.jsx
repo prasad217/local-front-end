@@ -1,91 +1,117 @@
 import React, { useState } from 'react';
+import styles from './DeliveryRegistration.module.css';
 
 function DeliveryRegistration() {
-    const [registrationForm, setRegistrationForm] = useState({
-        name: '',
-        phone: '',
-        dob: '',
-        email: '',
-        address: '',
-        vehicle_number: '',
-        password: ''
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    dob: '',
+    email: '',
+    address: '',
+    vehicle_number: '',
+    password: ''
+  });
+  const [stage, setStage] = useState(1); // 1: Data entry, 2: OTP verification
+  const [error, setError] = useState('');
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.password) {
+      console.error('Password is required');
+      return; // Prevent the form submission if password is missing
+    }
+    if (stage === 1) {
+      try {
+        const response = await fetch('http://localhost:3001/delivery-agent/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
+        if (!response.ok) throw new Error('Failed to register delivery agent');
+        setStage(2); // Move to OTP verification stage
+      } catch (error) {
+        console.error('Error registering delivery agent:', error);
+        setError('Failed to register delivery agent. Please check your input.');
+      }
+    } else {
+      verifyOtp();
+    }
+  };
+
+  const verifyOtp = async () => {
+    try {
+      const response = await fetch('http://localhost:3001/delivery-agent/verify-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: formData.email, otp: formData.otp })
       });
-      const [otp, setOtp] = useState('');
-      const [emailForOtp, setEmailForOtp] = useState('');
-    
-      // Handle form changes
-      const handleRegistrationChange = (e) => {
-        setRegistrationForm({ ...registrationForm, [e.target.name]: e.target.value });
-      };
-    
-      // Handle registration submission
-      const handleRegister = (e) => {
-        e.preventDefault();
-        fetch('http://localhost:3001/delivery-agent/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(registrationForm),
-        })
-        .then(response => response.json())
-        .then(data => {
-          alert(data.message);
-          if (data.success) {
-            setEmailForOtp(registrationForm.email);
-          }
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-        });
-      };
-    
-      // Handle OTP input change
-      const handleOtpChange = (e) => {
-        setOtp(e.target.value);
-      };
-    
-      // Verify OTP
-      const verifyOtp = (e) => {
-        e.preventDefault();
-        fetch('http://localhost:3001/delivery-agent/verify-otp', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email: emailForOtp, otp }),
-        })
-        .then(response => response.json())
-        .then(data => {
-          alert(data.message);
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-        });
-      };
+      if (!response.ok) {
+        throw new Error('OTP verification failed');
+      }
+      const data = await response.json();
+      console.log(data.message); // Assuming a success message is returned
+    } catch (error) {
+      console.error('Error verifying OTP:', error);
+    }
+  };
+
   return (
-    <div>
+    <div className={styles.container}>
       <h2>Delivery Agent Registration</h2>
-      <form onSubmit={handleRegister}>
-        <input type="text" name="name" placeholder="Name" value={registrationForm.name} onChange={handleRegistrationChange} />
-        <input type="text" name="phone" placeholder="Phone" value={registrationForm.phone} onChange={handleRegistrationChange} />
-        <input type="date" name="dob" placeholder="Date of Birth" value={registrationForm.dob} onChange={handleRegistrationChange} />
-        <input type="email" name="email" placeholder="Email" value={registrationForm.email} onChange={handleRegistrationChange} />
-        <input type="text" name="address" placeholder="Address" value={registrationForm.address} onChange={handleRegistrationChange} />
-        <input type="text" name="vehicle_number" placeholder="Vehicle Number" value={registrationForm.vehicle_number} onChange={handleRegistrationChange} />
-        <input type="password" name="password" placeholder="Password" value={registrationForm.password} onChange={handleRegistrationChange} />
-        <button type="submit">Register</button>
-      </form>
-      {emailForOtp && (
-        <>
-          <h2>Verify OTP</h2>
-          <form onSubmit={verifyOtp}>
-            <input type="text" placeholder="Enter OTP" value={otp} onChange={handleOtpChange} />
+      <form onSubmit={handleSubmit}>
+        {error && <p className={styles.error}>{error}</p>}
+        {stage === 1 && (
+          <>
+            <div className={styles.template}>
+              <h3>Personal Details</h3>
+              <div className="form-group">
+                <label htmlFor="name">Name:</label>
+                <input type="text" id="name" name="name" required onChange={handleInputChange} />
+              </div>
+              <div className="form-group">
+                <label htmlFor="phone">Phone No:</label>
+                <input type="tel" id="phone" name="phone" required onChange={handleInputChange} />
+              </div>
+              <div className="form-group">
+                <label htmlFor="dob">Date of Birth:</label>
+                <input type="date" id="dob" name="dob" required onChange={handleInputChange} />
+              </div>
+              <div className="form-group">
+                <label htmlFor="email">Email:</label>
+                <input type="email" id="email" name="email" required onChange={handleInputChange} />
+              </div>
+              <div className="form-group">
+                <label htmlFor="address">Address:</label>
+                <input type="text" id="address" name="address" required onChange={handleInputChange} />
+              </div>
+              <div className="form-group">
+                <label htmlFor="vehicle_number">Vehicle Number:</label>
+                <input type="text" id="vehicle_number" name="vehicle_number" onChange={handleInputChange} />
+              </div>
+              <div className="form-group">
+                <label htmlFor="password">Password:</label>
+                <input type="password" id="password" name="password" required onChange={handleInputChange} />
+              </div>
+            </div>
+            <button type="submit">Send OTP</button>
+          </>
+        )}
+        {stage === 2 && (
+          <div className={styles.template}>
+            <h3>Enter OTP</h3>
+            <div className="form-group">
+              <label htmlFor="otp">OTP:</label>
+              <input type="text" id="otp" name="otp" required onChange={handleInputChange} />
+            </div>
             <button type="submit">Verify OTP</button>
-            <DeliveryRegistration />
-          </form>
-        </>
-      )}
+          </div>
+        )}
+      </form>
     </div>
   );
 }

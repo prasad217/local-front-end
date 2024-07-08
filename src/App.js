@@ -26,6 +26,9 @@ import NearbyNavbar from './components/NearbyNavbar';
 import NearbyProductsCart from './components/NearbyProductsCart';
 import NearbyCheckout from './components/NearbyCheckout';
 import NearbyOrderConfirmation from './components/NearbyOrderConfirmation';
+import DeliveryAgentHome from './components/DeliveryAgentHome';
+import OrderHistory from './components/OrderHistory';
+import ProfilePage from './components/ProfilePage';
 function App() {
   return (
     <Router>
@@ -51,6 +54,9 @@ function App() {
         <Route path="/nearby/cart" element={<NearbyProductsCart />} />
         <Route path="/nearby/checkout" element={<NearbyCheckout />} />
         <Route path="/nearby/order-confirmation" element={<NearbyOrderConfirmation />} />
+        <Route path="/delivery-agent/home" element={<DeliveryAgentHome />} />
+        <Route path="/orders" element={<OrderHistory />} />
+        <Route path="/profile" element={<ProfilePage />} />
       </Routes>
     </Router>
   );

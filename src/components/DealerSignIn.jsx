@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import styles from './Signin.module.css';  
 
 function DealerSignIn() {
   const [formData, setFormData] = useState({
@@ -52,52 +53,59 @@ function DealerSignIn() {
   };
 
   return (
-    <div className="container">
-      <h2>Dealer Sign In</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            required
-            value={formData.email}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            required
-            value={formData.password}
-            onChange={handleInputChange}
-          />
-        </div>
-        {needOTP && (
+    <div>
+      <h1 className={styles.header}>Local Treasures</h1>
+      <div className={styles.container}>
+        <h2 className={styles.subHeader}>Dealer Sign In</h2>
+        <form onSubmit={handleSubmit}>
           <div>
-            <label htmlFor="otp">OTP:</label>
+            <label htmlFor="email" className={`${styles.label} ${errorMessage ? styles.errorLabel : ''}`}>Email:</label>
             <input
-              type="text"
-              id="otp"
-              name="otp"
+              type="email"
+              id="email"
+              name="email"
               required
-              value={formData.otp}
+              value={formData.email}
               onChange={handleInputChange}
+              className={styles.input}
             />
           </div>
+          <div>
+            <label htmlFor="password" className={`${styles.label} ${errorMessage ? styles.errorLabel : ''}`}>Password:</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              required
+              value={formData.password}
+              onChange={handleInputChange}
+              className={styles.input}
+            />
+          </div>
+          {needOTP && (
+            <div>
+              <label htmlFor="otp" className={`${styles.label} ${errorMessage ? styles.errorLabel : ''}`}>OTP:</label>
+              <input
+                type="text"
+                id="otp"
+                name="otp"
+                required
+                value={formData.otp}
+                onChange={handleInputChange}
+                className={styles.input}
+              />
+            </div>
+          )}
+          <button type="submit" className={styles.submitButton}>{needOTP ? 'Verify OTP' : 'Sign In'}</button>
+        </form>
+        {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
+        {!needOTP && (
+          <div className={styles.link}>
+            <p>Don't have an account? <Link to="/dealer/register">Register</Link></p>
+          </div>
         )}
-        <button type="submit">{needOTP ? 'Verify OTP' : 'Sign In'}</button>
-      </form>
-      {errorMessage && <p className="error">{errorMessage}</p>}
-      {!needOTP && (
-        <div>
-          <p>Don't have an account? <Link to="/dealer/register">Register</Link></p>
-        </div>
-      )}
+      </div>
+      <p className={styles.footer}>© 2024 Local Treasures. All rights reserved.</p>
     </div>
   );
 }

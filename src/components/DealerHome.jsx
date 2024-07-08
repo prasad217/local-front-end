@@ -4,12 +4,10 @@ import { Link } from 'react-router-dom';
 function DealerHome() {
   const [dealerInfo, setDealerInfo] = useState({});
   const [products, setProducts] = useState([]);
+  const [nearbyOrders, setNearbyOrders] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [formMessage, setFormMessage] = useState('');
-  const [nearbyOrders, setNearbyOrders] = useState([]);
-  const [dealerOrders, setDealerOrders] = useState([]);
-  const [imageType, setImageType] = useState('upload'); // Default to 'upload'
-  
+
   const fetchProducts = useCallback(async () => {
     try {
       const response = await fetch(`http://localhost:3001/dealer/products/${dealerInfo.dealerId}`, {
@@ -27,44 +25,14 @@ function DealerHome() {
     }
   }, [dealerInfo.dealerId]);
 
-  const fetchDealerInfo = useCallback(async () => {
-    try {
-      const response = await fetch('http://localhost:3001/dealer/info', {
-        method: 'GET',
-        credentials: 'include',
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setDealerInfo(data);
-        fetchProducts(); // Fetch products after fetching dealer info
-      } else {
-        console.error('Failed to fetch dealer info: Response was not ok.');
-      }
-    } catch (error) {
-      console.error('Error fetching dealer info:', error.message);
-    }
-  }, [fetchProducts]);
-
   const fetchNearbyOrders = useCallback(async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/nearby/orders', {
+      const response = await fetch(`http://localhost:3001/dealer/nearbyOrders/${dealerInfo.dealerId}`, {
         method: 'GET',
         credentials: 'include',
       });
       if (response.ok) {
         const data = await response.json();
-        if (data.length > 0) {
-          // Trigger notification for new nearby orders
-          if ('Notification' in window && Notification.permission === 'granted') {
-            new Notification(`New nearby order received`);
-          } else if ('Notification' in window && Notification.permission !== 'denied') {
-            Notification.requestPermission().then(function(permission) {
-              if (permission === 'granted') {
-                new Notification(`New nearby order received`);
-              }
-            });
-          }
-        }
         setNearbyOrders(data);
       } else {
         console.error('Failed to fetch nearby orders');
@@ -72,43 +40,30 @@ function DealerHome() {
     } catch (error) {
       console.error('Error fetching nearby orders:', error.message);
     }
-  }, []);
-
-  const fetchDealerOrders = useCallback(async () => {
-    try {
-      const response = await fetch('http://localhost:3001/dealer/orders', {
-        method: 'GET',
-        credentials: 'include',
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setDealerOrders(data);
-      } else {
-        console.error('Failed to fetch dealer orders');
-      }
-    } catch (error) {
-      console.error('Error fetching dealer orders:', error.message);
-    }
-  }, []);
+  }, [dealerInfo.dealerId]);
 
   useEffect(() => {
-    fetchDealerInfo();
-    fetchNearbyOrders();
-    fetchDealerOrders();
-  }, [fetchDealerInfo, fetchNearbyOrders, fetchDealerOrders]);
+    const fetchDealerInfo = async () => {
+      try {
+        const response = await fetch('http://localhost:3001/dealer/info', {
+          method: 'GET',
+          credentials: 'include',
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setDealerInfo(data);
+          fetchProducts();
+          fetchNearbyOrders();
+        } else {
+          console.error('Failed to fetch dealer info: Response was not ok.');
+        }
+      } catch (error) {
+        console.error('Error fetching dealer info:', error.message);
+      }
+    };
 
-  const handleImageTypeChange = (event) => {
-    setImageType(event.target.value);
-    const imageInputContainer = document.getElementById('uploadImageContainer');
-    const imageUrlInputContainer = document.getElementById('imageUrlContainer');
-    if (event.target.value === 'upload') {
-      imageInputContainer.style.display = 'block';
-      imageUrlInputContainer.style.display = 'none';
-    } else {
-      imageInputContainer.style.display = 'none';
-      imageUrlInputContainer.style.display = 'block';
-    }
-  };
+    fetchDealerInfo();
+  }, [fetchProducts, fetchNearbyOrders]);
 
   const handleLogout = async () => {
     try {
@@ -129,6 +84,7 @@ function DealerHome() {
   const addProduct = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
+
     try {
       const response = await fetch('http://localhost:3001/dealer/addProduct', {
         method: 'POST',
@@ -136,19 +92,20 @@ function DealerHome() {
         credentials: 'include',
       });
       if (response.ok) {
-        setFormMessage('Product added successfully');
-        setShowForm(false);
-        fetchProducts(dealerInfo.dealerId); // Refresh products list
+        setFormMessage('Product successfully added.');
+        event.target.reset(); // Reset form after successful submission
+        setShowForm(false); // Optionally hide form
+        fetchProducts(); // Fetch updated product list
       } else {
-        setFormMessage('Failed to add product');
+        setFormMessage('Failed to add product.');
       }
     } catch (error) {
-      console.error('Error adding product:', error);
+      console.error('Error adding product:', error.message);
       setFormMessage('Error adding product: ' + error.message);
     }
   };
 
-  const deleteProduct = async (productId) => {
+  const deleteproduct = async (productId) => {
     try {
       const response = await fetch(`http://localhost:3001/api/dealer/products/${productId}`, {
         method: 'DELETE',
@@ -157,12 +114,12 @@ function DealerHome() {
           'Content-Type': 'application/json',
         },
       });
-
-      if (response.ok) {
-        fetchProducts(); // Refresh products after deletion
-      } else {
-        console.error('Failed to delete product');
+  
+      if (!response.ok) {
+        throw new Error('Failed to delete product');
       }
+  
+      fetchProducts(); // Refresh products after deletion
     } catch (error) {
       console.error('Error deleting product:', error);
     }
@@ -170,84 +127,81 @@ function DealerHome() {
 
   return (
     <div className="container">
-      <button onClick={handleLogout}>Logout</button>
+      <button onClick={handleLogout}>Log Out</button>
       <Link to="/dealer/orders">
-        <button>View Orders</button>
+        <button>View All Orders</button>
       </Link>
+      <button onClick={fetchNearbyOrders}>View Nearby Orders</button>
       <h2>Welcome, {dealerInfo.name || 'Dealer'}!</h2>
       {formMessage && <p>{formMessage}</p>}
       <button id="add-product-btn" onClick={() => setShowForm(!showForm)}>
-        {showForm ? 'Cancel' : 'Add Product'}
+        {showForm ? 'Cancel Addition' : 'Add New Product'}
       </button>
       {showForm && (
-       <form onSubmit={addProduct} encType="multipart/form-data">
-       <div>
-         <label htmlFor="name">Product Name:</label>
-         <input type="text" id="name" name="name" required />
-       </div>
-       <div>
-         <label htmlFor="imageType">Image Type:</label>
-         <select id="imageType" name="imageType" required onChange={handleImageTypeChange}>
-           <option value="upload">Upload Image</option>
-           <option value="url">Image URL</option>
-         </select>
-       </div>
-       {imageType === 'upload' && (
-         <div>
-           <label htmlFor="image">Upload Image:</label>
-           <input type="file" id="image" name="image" accept="image/*" />
-         </div>
-       )}
-       {imageType === 'url' && (
-         <div>
-           <label htmlFor="imageUrlInput">Image URL:</label>
-           <input type="url" id="imageUrlInput" name="imageUrlInput" />
-         </div>
-       )}
-       <div>
-         <label htmlFor="actualCost">Actual Cost:</label>
-         <input type="number" id="actualCost" name="actualCost" step="0.01" required />
-       </div>
-       <div>
-         <label htmlFor="discountPrice">Discount Price:</label>
-         <input type="number" id="discountPrice" name="discountPrice" step="0.01" required />
-       </div>
-       <div>
-         <label htmlFor="instockqty">In Stock Quantity:</label>
-         <input type="number" id="instockqty" name="instockqty" required />
-       </div>
-       <div>
-         <label htmlFor="category">Category:</label>
-         <select id="category" name="category" required>
-           <option value="">Select category</option>
-           <option value="home-appliances">Home Appliances</option>
-           <option value="electronics">Electronics</option>
-           <option value="laptops">Laptops</option>
-           <option value="mobiles">Mobiles</option>
-           <option value="fashion">Clothing</option>
-           <option value="medicines">MediCart</option>
-           <option value="toystore">Toystore</option>
-           <option value="grocery">Grocery</option>
-         </select>
-       </div>
-       <div>
-         <label htmlFor="description">Description:</label>
-         <textarea id="description" name="description" rows="4" cols="50"></textarea>
-       </div>
-       <button type="submit">Add Product</button>
-     </form>
+        <form id="add-product-form" onSubmit={addProduct} encType="multipart/form-data">
+          <div>
+            <label htmlFor="name">Product Name:</label>
+            <input type="text" id="name" name="name" required />
+          </div>
+          <div>
+            <label htmlFor="imageType">Select Image Type:</label>
+            <select id="imageType" name="imageType" required onChange={handleImageTypeChange}>
+              <option value="upload">Upload Image</option>
+              <option value="url">Image URL</option>
+            </select>
+          </div>
+          <div id="uploadImageContainer" style={{ display: 'none' }}>
+            <label htmlFor="image">Upload Product Image:</label>
+            <input type="file" id="image" name="image" accept="image/*" />
+          </div>
+          <div id="imageUrlContainer" style={{ display: 'none' }}>
+            <label htmlFor="imageUrlInput">Product Image URL:</label>
+            <input type="url" id="imageUrlInput" name="imageUrlInput" />
+          </div>
+          <div>
+            <label htmlFor="actualCost">Retail Price:</label>
+            <input type="number" id="actualCost" name="actualCost" step="0.01" required />
+          </div>
+          <div>
+            <label htmlFor="discountPrice">Discounted Price:</label>
+            <input type="number" id="discountPrice" name="discountPrice" step="0.01" required />
+          </div>
+          <div>
+            <label htmlFor="instockqty">Available Stock Quantity:</label>
+            <input type="number" id="instockqty" name="instockqty" required />
+          </div>
+          <div>
+            <label htmlFor="category">Product Category:</label>
+            <select id="category" name="category" required>
+              <option value="">--Please Select a Category--</option>
+              <option value="home-appliances">Home Appliances</option>
+              <option value="electronics">Electronics</option>
+              <option value="laptops">Laptops</option>
+              <option value="mobiles">Mobiles</option>
+              <option value="fashion">Clothing</option>
+              <option value="medicines">Medicines</option>
+              <option value="toystore">Toys</option>
+              <option value="grocery">Grocery</option>
+            </select>
+          </div>
+          <div>
+            <label htmlFor="description">Product Description:</label>
+            <textarea id="description" name="description" rows="4" cols="50"></textarea>
+          </div>
+          <button type="submit">Submit Product</button>
+        </form>
       )}
-      <h3>Products Uploaded</h3>
+      <h3>Uploaded Products</h3>
       <table>
         <thead>
           <tr>
             <th>Name</th>
             <th>Image</th>
             <th>Description</th>
-            <th>Actual Cost</th>
-            <th>Discount Price</th>
+            <th>Retail Price</th>
+            <th>Discounted Price</th>
             <th>Category</th>
-            <th>In Stock Quantity</th>
+            <th>Stock Quantity</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -257,42 +211,19 @@ function DealerHome() {
               <td>{product.name}</td>
               <td><img src={product.image_url} alt={product.name} style={{ width: '50px', height: '50px' }} /></td>
               <td>{product.description}</td>
-              <td>{product.actual_cost}</td>
-              <td>{product.discount_price}</td>
+              <td>${product.actual_cost}</td>
+              <td>${product.discount_price}</td>
               <td>{product.category}</td>
               <td>{product.instockqty}</td>
               <td>
-                <button>Edit Stock</button>
-                <button onClick={() => deleteProduct(product.id)}>Remove</button>
-                <button>Change Price</button>
+                <button onClick={() => {/* edit stock logic here */}}>Edit Stock</button>
+                <button onClick={() => deleteproduct(product.id)}>Remove</button>
+                <button onClick={() => {/* change price logic here */}}>Change Price</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <h3>Nearby Orders</h3>
-      <div>
-        {nearbyOrders.map((order, index) => (
-          <div key={index}>
-            {index === 0 || nearbyOrders[index - 1].orderId !== order.orderId ? (
-              <div>
-                <p>Order ID: {order.orderId}</p>
-                {order.products.map(product => (
-                  <div key={product.productId}>
-                    <p>Product: {product.name} (Quantity: {product.quantity})</p>
-                    <p>Total Price: ${product.totalPrice.toFixed(2)}</p>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div>
-                <p>Product: {order.products[0].name} (Quantity: {order.products[0].quantity})</p>
-                <p>Total Price: ${order.products[0].totalPrice.toFixed(2)}</p>
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
     </div>
   );
 }
