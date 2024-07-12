@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 function DealerHome() {
   const [dealerInfo, setDealerInfo] = useState({});
   const [products, setProducts] = useState([]);
-  const [nearbyOrders, setNearbyOrders] = useState([]);
+  // const [nearbyOrders, setNearbyOrders] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [formMessage, setFormMessage] = useState('');
 
@@ -32,8 +32,9 @@ function DealerHome() {
         credentials: 'include',
       });
       if (response.ok) {
-        const data = await response.json();
-        setNearbyOrders(data);
+        // Uncomment this if you need to use data in the future
+        // const data = await response.json();
+        // setNearbyOrders(data);
       } else {
         console.error('Failed to fetch nearby orders');
       }
@@ -105,7 +106,7 @@ function DealerHome() {
     }
   };
 
-  const deleteproduct = async (productId) => {
+  const deleteProduct = async (productId) => {
     try {
       const response = await fetch(`http://localhost:3001/api/dealer/products/${productId}`, {
         method: 'DELETE',
@@ -122,6 +123,19 @@ function DealerHome() {
       fetchProducts(); // Refresh products after deletion
     } catch (error) {
       console.error('Error deleting product:', error);
+    }
+  };
+
+  const handleImageTypeChange = (event) => {
+    const uploadImageContainer = document.getElementById('uploadImageContainer');
+    const imageUrlContainer = document.getElementById('imageUrlContainer');
+
+    if (event.target.value === 'upload') {
+      uploadImageContainer.style.display = 'block';
+      imageUrlContainer.style.display = 'none';
+    } else {
+      uploadImageContainer.style.display = 'none';
+      imageUrlContainer.style.display = 'block';
     }
   };
 
@@ -217,7 +231,7 @@ function DealerHome() {
               <td>{product.instockqty}</td>
               <td>
                 <button onClick={() => {/* edit stock logic here */}}>Edit Stock</button>
-                <button onClick={() => deleteproduct(product.id)}>Remove</button>
+                <button onClick={() => deleteProduct(product.id)}>Remove</button>
                 <button onClick={() => {/* change price logic here */}}>Change Price</button>
               </td>
             </tr>
