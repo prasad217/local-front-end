@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/local-treasures/static/css/main.75bb0382.css",
+    "main.js": "/local-treasures/static/js/main.4274f05b.js",
+    "static/js/453.1cb29ae8.chunk.js": "/local-treasures/static/js/453.1cb29ae8.chunk.js",
+    "static/media/nearbycart.png": "/local-treasures/static/media/nearbycart.57ea612c2129eb3a5a10.png",
+    "static/media/cart.png": "/local-treasures/static/media/cart.b4a7289cff6737b2fca7.png",
+    "static/media/slick.svg": "/local-treasures/static/media/slick.2630a3e3eab21c607e21.svg",
+    "static/media/slick.eot": "/local-treasures/static/media/slick.a4e97f5a2a64f0ab1323.eot",
+    "static/media/slick.ttf": "/local-treasures/static/media/slick.c94f7671dcc99dce43e2.ttf",
+    "static/media/slick.woff": "/local-treasures/static/media/slick.295183786cd8a1389865.woff",
+    "index.html": "/local-treasures/index.html",
+    "main.75bb0382.css.map": "/local-treasures/static/css/main.75bb0382.css.map",
+    "main.4274f05b.js.map": "/local-treasures/static/js/main.4274f05b.js.map",
+    "453.1cb29ae8.chunk.js.map": "/local-treasures/static/js/453.1cb29ae8.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.75bb0382.css",
+    "static/js/main.4274f05b.js"
+  ]
+}
