@@ -22,7 +22,7 @@ function Checkout() {
 
   // Fetch addresses
   useEffect(() => {
-    fetch(`http://localhost:3000/api/users/addresses`, {
+    fetch(`${process.env.REACT_APP_API_URL}/api/users/addresses`, {
       method: 'GET',
       credentials: 'include',
     })
@@ -41,7 +41,7 @@ function Checkout() {
 
   // Fetch cart items
   useEffect(() => {
-    fetch('http://localhost:3000/api/cart', {
+    fetch(`${process.env.REACT_APP_API_URL}/api/cart`, {
       method: 'GET',
       credentials: 'include',
     })
@@ -73,7 +73,7 @@ function Checkout() {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    fetch(`http://localhost:3000/api/address`, {
+    fetch(`${process.env.REACT_APP_API_URL}/api/address`, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -113,7 +113,7 @@ function Checkout() {
       totalPrice: totalPrice,
     };
   
-    fetch('http://localhost:3001/api/orders', {
+    fetch(`${process.env.REACT_APP_API_URL}/api/orders`, {
       method: 'POST',
       credentials: 'include',
       headers: {

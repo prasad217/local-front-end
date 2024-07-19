@@ -22,7 +22,7 @@ function NearbyCheckout() {
 
   // Fetch addresses and cart items
   useEffect(() => {
-    fetch(`http://localhost:3000/api/users/nearby-addresses`, {
+    fetch(`${process.env.REACT_APP_API_URL}/api/users/nearby-addresses`, {
       method: 'GET',
       credentials: 'include',
     })
@@ -38,7 +38,7 @@ function NearbyCheckout() {
       setError('Failed to load addresses. Please try again later.');
     });
 
-    fetch('http://localhost:3000/api/nearby/cart', {
+    fetch(`${process.env.REACT_APP_API_URL}0/api/nearby/cart`, {
       method: 'GET',
       credentials: 'include',
     })
@@ -70,7 +70,7 @@ function NearbyCheckout() {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    fetch(`http://localhost:3000/api/nearby/address`, {
+    fetch(`${process.env.REACT_APP_API_URL}/api/nearby/address`, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -110,7 +110,7 @@ function NearbyCheckout() {
       deliveryOption: deliveryOption,
     };
   
-    fetch('http://localhost:3001/api/nearby/orders', {
+    fetch(`${process.env.REACT_APP_API_URL}/api/nearby/orders`, {
       method: 'POST',
       credentials: 'include',
       headers: {

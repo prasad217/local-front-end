@@ -23,7 +23,7 @@ function DealerSignIn() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const url = needOTP ? 'http://localhost:3001/dealer/verify-otp' : 'http://localhost:3001/dealer/signin';
+    const url = needOTP ? `${process.env.REACT_APP_API_URL}/dealer/verify-otp` : `${process.env.REACT_APP_API_URL}/dealer/signin`;
     try {
       const response = await fetch(url, {
         method: 'POST',

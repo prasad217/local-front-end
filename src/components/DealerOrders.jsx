@@ -5,7 +5,7 @@ function DealerOrders() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:3001/dealer/orders', {
+    fetch(`${process.env.REACT_APP_API_URL}/dealer/orders`, {
       method: 'GET',
       credentials: 'include', // Ensures cookies, such as session cookies, are sent with the request
     })

@@ -7,7 +7,7 @@ function CategoryProducts() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:3001/api/products/category/${categoryName}`)
+    fetch(`${process.env.REACT_APP_API_URL}/api/products/category/${categoryName}`)
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -20,7 +20,7 @@ function CategoryProducts() {
 
   const addToCart = (productId) => {
     // Assuming you have a user session and the API expects a productId
-    fetch('http://localhost:3001/api/cart', {
+    fetch(`${process.env.REACT_APP_API_URL}/api/cart`, {
       method: 'POST',
       credentials: 'include', // for session cookies
       headers: {

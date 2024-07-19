@@ -14,7 +14,7 @@ function NearbyNavbar() {
   useEffect(() => {
     const checkLoggedIn = async () => {
       try {
-        const response = await fetch('http://localhost:3001/api/user/info', {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/user/info`, {
           method: 'GET',
           credentials: 'include',
           headers: {
@@ -35,7 +35,7 @@ function NearbyNavbar() {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch('http://localhost:3001/logout', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/logout`, {
         method: 'POST',
         credentials: 'include',
       });

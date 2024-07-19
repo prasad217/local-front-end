@@ -27,7 +27,7 @@ function DeliveryRegistration() {
     }
     if (stage === 1) {
       try {
-        const response = await fetch('http://localhost:3001/delivery-agent/register', {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/delivery-agent/register`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData)
@@ -45,7 +45,7 @@ function DeliveryRegistration() {
 
   const verifyOtp = async () => {
     try {
-      const response = await fetch('http://localhost:3001/delivery-agent/verify-otp', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/delivery-agent/verify-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: formData.email, otp: formData.otp })

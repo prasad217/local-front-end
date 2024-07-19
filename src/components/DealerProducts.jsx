@@ -29,7 +29,7 @@ function DealerProducts() {
 
   const addToNearbyCart = async (productId, dealerId) => {
     try {
-      const response = await fetch('http://localhost:3001/api/nearby/cart', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/nearby/cart`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -59,7 +59,7 @@ function DealerProducts() {
 
   const replaceCart = async (productId, dealerId) => {
     try {
-      const response = await fetch('http://localhost:3001/api/nearby/cart/replace', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/nearby/cart/replace`, {
         method: 'POST',
         credentials: 'include',
         headers: {

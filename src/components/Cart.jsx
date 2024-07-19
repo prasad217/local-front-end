@@ -12,7 +12,7 @@ function Cart() {
 
   const fetchCartItems = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/cart', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/cart`, {
         method: 'GET',
         credentials: 'include',
       });
@@ -31,7 +31,7 @@ function Cart() {
   const updateCartItemQuantity = (productId, newQuantity) => {
     const quantity = Math.max(newQuantity, 1);
 
-    fetch(`http://localhost:3001/api/cart/items/${productId}`, {
+    fetch(`${process.env.REACT_APP_API_URL}/api/cart/items/${productId}`, {
       method: 'PATCH',
       credentials: 'include',
       headers: {
@@ -51,7 +51,7 @@ function Cart() {
   };
 
   const deleteCartItem = (productId) => {
-    fetch(`http://localhost:3001/api/cart/${productId}`, {
+    fetch(`${process.env.REACT_APP_API_URL}/api/cart/${productId}`, {
       method: 'DELETE',
       credentials: 'include',
       headers: {
@@ -94,9 +94,8 @@ function Cart() {
               <button onClick={() => updateCartItemQuantity(item.id, item.quantity + 1)}>+</button>
             </span>
             <span className={styles.price}>
-  ${item.price ? parseFloat(item.price).toFixed(2) : '0.00'}
-</span>
-
+              ${item.price ? parseFloat(item.price).toFixed(2) : '0.00'}
+            </span>
             <button onClick={() => deleteCartItem(item.id)} className={styles.removeButton}>Remove</button>
           </div>
         ))}

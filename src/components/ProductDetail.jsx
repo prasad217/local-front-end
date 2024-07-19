@@ -8,14 +8,14 @@ function ProductDetail() {
 
   useEffect(() => {
     // Fetch product details by ID first
-    fetch(`http://localhost:3001/api/products/${productId}`)
+    fetch(`${process.env.REACT_APP_API_URL}/api/products/${productId}`)
       .then(response => response.json())
       .then(data => {
         setProduct(data);
         // Then fetch related products by the fetched product's category
         // Check if the category is available before fetching
         if (data.category) {
-          return fetch(`http://localhost:3001/api/products/category/${data.category}`);
+          return fetch(`${process.env.REACT_APP_API_URL}/api/products/category/${data.category}`);
         }
         return Promise.resolve({ json: () => [] }); // Resolve to an empty array if no category
       })
@@ -26,7 +26,7 @@ function ProductDetail() {
 
   const addToCart = (productId) => {
     // Assuming you have a user session and the API expects a productId
-    fetch('http://localhost:3001/api/cart', {
+    fetch('${process.env.REACT_APP_API_URL}/api/cart', {
       method: 'POST',
       credentials: 'include', // for session cookies
       headers: {

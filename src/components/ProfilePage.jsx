@@ -6,14 +6,14 @@ const ProfilePage = () => {
   const [suggestions, setSuggestions] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/user/info', {
+    fetch(`${process.env.REACT_APP_API_URL}/api/user/info`, {
       credentials: 'include',
     })
       .then(response => response.json())
       .then(data => setUser(data))
       .catch(error => console.error('Error fetching user data:', error));
 
-    fetch('http://localhost:3001/api/user/suggestions', {
+    fetch(`${process.env.REACT_APP_API_URL}/api/user/suggestions`, {
       credentials: 'include',
     })
       .then(response => response.json())

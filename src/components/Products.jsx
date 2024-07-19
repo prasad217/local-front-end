@@ -10,7 +10,7 @@ function Products() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('http://localhost:3001/api/products', {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/products`, {
           credentials: 'include',
         });
         if (!response.ok) {
