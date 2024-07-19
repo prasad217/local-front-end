@@ -3,6 +3,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import NearbyNavbar from './components/NearbyNavbar';
 import Slider from './components/Slider';
 import Categories from './components/Categories';
 import Products from './components/Products';
@@ -13,7 +14,6 @@ import DealerRegistration from './components/DealerRegistration';
 import DealerHome from './components/DealerHome';
 import ProductDetail from './components/ProductDetail';
 import CategoryProducts from './components/CategoryProducts';
-import './components/Navbar.css';
 import Cart from './components/Cart';
 import OrderConfirmation from './components/OrderConfirmation';
 import Checkout from './components/Checkout';
@@ -22,13 +22,14 @@ import DeliveryRegistration from './components/DeliveryRegistration';
 import DeliveryAgentSignIn from './components/DeliveryAgentSignIn';
 import NearbyDealers from './components/NearbyDealers';
 import DealerProducts from './components/DealerProducts';
-import NearbyNavbar from './components/NearbyNavbar';
 import NearbyProductsCart from './components/NearbyProductsCart';
 import NearbyCheckout from './components/NearbyCheckout';
 import NearbyOrderConfirmation from './components/NearbyOrderConfirmation';
 import DeliveryAgentHome from './components/DeliveryAgentHome';
 import OrderHistory from './components/OrderHistory';
 import ProfilePage from './components/ProfilePage';
+import './components/Navbar.css';
+
 function App() {
   return (
     <Router>

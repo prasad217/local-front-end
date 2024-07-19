@@ -26,7 +26,7 @@ function ProductDetail() {
 
   const addToCart = (productId) => {
     // Assuming you have a user session and the API expects a productId
-    fetch('${process.env.REACT_APP_API_URL}/api/cart', {
+    fetch(`${process.env.REACT_APP_API_URL}/api/cart`, {
       method: 'POST',
       credentials: 'include', // for session cookies
       headers: {
@@ -47,7 +47,6 @@ function ProductDetail() {
       console.error("Failed to add product to cart", error);
     });
   };
-
 
   if (!product) return <div>Loading...</div>;
 
