@@ -22,7 +22,7 @@ function NearbyCheckout() {
 
   // Fetch addresses and cart items
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/api/users/nearby-addresses`, {
+    fetch(`https://local-treasures.onrender.com/api/users/nearby-addresses`, {
       method: 'GET',
       credentials: 'include',
     })
@@ -38,7 +38,7 @@ function NearbyCheckout() {
       setError('Failed to load addresses. Please try again later.');
     });
 
-    fetch(`${process.env.REACT_APP_API_URL}0/api/nearby/cart`, {
+    fetch(`https://local-treasures.onrender.com/api/nearby/cart`, {
       method: 'GET',
       credentials: 'include',
     })
@@ -70,7 +70,7 @@ function NearbyCheckout() {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    fetch(`${process.env.REACT_APP_API_URL}/api/nearby/address`, {
+    fetch(`https://local-treasures.onrender.com/api/nearby/address`, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -110,7 +110,7 @@ function NearbyCheckout() {
       deliveryOption: deliveryOption,
     };
   
-    fetch(`${process.env.REACT_APP_API_URL}/api/nearby/orders`, {
+    fetch(`https://local-treasures.onrender.com/api/nearby/orders`, {
       method: 'POST',
       credentials: 'include',
       headers: {

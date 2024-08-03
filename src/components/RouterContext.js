@@ -1,5 +1,4 @@
 import React from 'react';
 
-const RouterContext = React.createContext(); // Optionally, you can set a default value
-
+const RouterContext = React.createContext(); 
 export default RouterContext;

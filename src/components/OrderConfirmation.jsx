@@ -34,6 +34,7 @@ const styles = {
     margin: '0 auto',
     padding: '20px',
     textAlign: 'center',
+    backgroundColor: '#e0f7fa', // Light blue background
   },
   header: {
     color: '#4CAF50', // Example color

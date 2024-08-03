@@ -10,7 +10,7 @@ function Products() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/products`, {
+        const response = await fetch(`https://local-treasures.onrender.com/api/products`, {
           credentials: 'include',
         });
         if (!response.ok) {
@@ -43,10 +43,11 @@ function Products() {
   const addToCart = async (productId, event) => {
     event.stopPropagation(); // Prevent navigation when clicking "Add to Cart"
     try {
-      const response = await fetch("/api/cart", {
+      const response = await fetch(`https://local-treasures.onrender.com/api/cart`, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({ productId }),
+        credentials: 'include',
       });
   
       if (response.ok) {
@@ -54,7 +55,7 @@ function Products() {
         alert("Product added to cart!");
       } else if (response.status === 401) {
         alert("You need to sign in to add products to the cart.");
-        window.location.href = "http://localhost:3000/signin";
+        window.location.href = "/signin";
       } else {
         throw new Error("Failed to add product to cart.");
       }

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import './OrderHistory.css'; // Assuming you have a CSS file for styles
 
 function OrderHistory() {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
     // Fetch order history for the current user from backend
-    fetch('/api/orders/history')
+    fetch('https://local-treasures.onrender.com/api/orders/history')
       .then(response => response.json())
       .then(data => {
         setOrders(data); // Assuming data is an array of orders with items
@@ -22,7 +23,7 @@ function OrderHistory() {
   };
 
   return (
-    <div>
+    <div className="order-history-container">
       <h2>Order History</h2>
       <div className="order-list">
         {orders.map(order => (
@@ -31,17 +32,17 @@ function OrderHistory() {
             <p>Total Price: {order.total_price ? parseFloat(order.total_price).toFixed(2) : '-'}</p>
             <p>Date Ordered: {new Date(order.created_at).toLocaleDateString()}</p>
             <ul>
-            {order.items.map(item => (
-  <li key={item.id}>
-    <Link to={`/product/${item.product_id}`}>
-      <img src={`/products/${item.image_url}`} alt={item.name} style={{ width: '50px', height: '50px', marginRight: '10px' }} />
-      {item.name}
-    </Link>
-    <p>Qty Ordered: {item.quantity}</p>
-  </li>
-))}
+              {order.items.map(item => (
+                <li key={item.id}>
+                  <Link to={`/product/${item.product_id}`}>
+                    <img src={`https://local-treasures.onrender.com/products/${item.image_url}`} alt={item.name} className="product-image" />
+                    {item.name}
+                  </Link>
+                  <p>Qty Ordered: {item.quantity}</p>
+                </li>
+              ))}
             </ul>
-            <button onClick={() => handleBuyAgain(order)}>Buy Again</button>
+            <button className="buy-again-button" onClick={() => handleBuyAgain(order)}>Buy Again</button>
           </div>
         ))}
       </div>

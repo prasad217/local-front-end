@@ -10,7 +10,7 @@ function DealerHome() {
 
   const fetchProducts = useCallback(async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/dealer/products/${dealerInfo.dealerId}`, {
+      const response = await fetch(`https://local-treasures.onrender.com/dealer/products/${dealerInfo.dealerId}`, {
         method: 'GET',
         credentials: 'include',
       });
@@ -27,7 +27,7 @@ function DealerHome() {
 
   const fetchNearbyOrders = useCallback(async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/dealer/nearbyOrders/${dealerInfo.dealerId}`, {
+      const response = await fetch(`https://local-treasures.onrender.com/dealer/nearbyOrders/${dealerInfo.dealerId}`, {
         method: 'GET',
         credentials: 'include',
       });
@@ -46,7 +46,7 @@ function DealerHome() {
   useEffect(() => {
     const fetchDealerInfo = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/dealer/info`, {
+        const response = await fetch(`https://local-treasures.onrender.com/dealer/info`, {
           method: 'GET',
           credentials: 'include',
         });
@@ -68,7 +68,7 @@ function DealerHome() {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/dealer/logout`, {
+      const response = await fetch(`https://local-treasures.onrender.com/dealer/logout`, {
         method: 'POST',
         credentials: 'include',
       });
@@ -87,7 +87,7 @@ function DealerHome() {
     const formData = new FormData(event.target);
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/dealer/addProduct`, {
+      const response = await fetch(`https://local-treasures.onrender.com/dealer/addProduct`, {
         method: 'POST',
         body: formData,
         credentials: 'include',
@@ -108,18 +108,18 @@ function DealerHome() {
 
   const deleteProduct = async (productId) => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/dealer/products/${productId}`, {
+      const response = await fetch(`https://local-treasures.onrender.com/api/dealer/products/${productId}`, {
         method: 'DELETE',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
       });
-  
+
       if (!response.ok) {
         throw new Error('Failed to delete product');
       }
-  
+
       fetchProducts(); // Refresh products after deletion
     } catch (error) {
       console.error('Error deleting product:', error);

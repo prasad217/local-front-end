@@ -8,22 +8,29 @@ function SignIn() {
 
   const handleSignIn = async (e) => {
     e.preventDefault();
-
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/signin`, {
+      const response = await fetch('https://local-treasures.onrender.com/signin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        credentials: 'include', // Necessary for cookies to be sent with requests
+        credentials: 'include',
         body: JSON.stringify({ email, password })
       });
-
-      const data = await response.json(); // Parse JSON response
+  
       if (response.ok) {
+        const data = await response.json();
         console.log('Sign-in successful', data);
-        window.location.href = '/'; // Redirect on successful sign-in
+        window.location.href = '/';
       } else {
+        // Check if response is not JSON
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          console.error('Unexpected response format:', contentType);
+          setErrorMessage('Unexpected response format. Please try again later.');
+          return;
+        }
+        const data = await response.json();
         console.error('Sign-in failed', data.message);
         setErrorMessage(data.message || 'Sign-in failed. Please check your credentials.');
       }

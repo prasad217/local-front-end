@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-
+import './ToggleSwitch.css'; // Move the styles to a CSS file
 
 const ToggleSwitch = () => {
   const location = useLocation();
@@ -25,26 +24,6 @@ const ToggleSwitch = () => {
           Online Store
         </div>
       </Link>
-
-      <style jsx>{`
-        .toggle-switch {
-          display: flex;
-          align-items: center;
-          background-color: #333;
-          border-radius: 20px;
-        }
-
-        .toggle-option {
-          padding: 10px ;
-          color: white;
-          background-color: black;
-          cursor: pointer;
-        }
-
-        .active {
-          background-color: green;
-        }
-      `}</style>
     </div>
   );
 };

@@ -12,7 +12,7 @@ function NearbyProductsCart() {
 
   const fetchNearbyCartItems = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/nearby/cart`, {
+      const response = await fetch(`https://local-treasures.onrender.com/api/nearby/cart`, {
         method: 'GET',
         credentials: 'include',
       });
@@ -40,7 +40,7 @@ function NearbyProductsCart() {
         }
       }
 
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/nearby/cart/items/${productId}`, {
+      const response = await fetch(`https://local-treasures.onrender.com/api/nearby/cart/items/${productId}`, {
         method: 'PATCH',
         credentials: 'include',
         headers: {
@@ -60,7 +60,7 @@ function NearbyProductsCart() {
 
   const deleteCartItem = async (productId) => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/nearby/cart/${productId}`, {
+      const response = await fetch(`https://local-treasures.onrender.com/api/nearby/cart/${productId}`, {
         method: 'DELETE',
         credentials: 'include',
         headers: {

@@ -12,7 +12,7 @@ function Cart() {
 
   const fetchCartItems = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/cart`, {
+      const response = await fetch(`https://local-treasures.onrender.com/api/cart`, {
         method: 'GET',
         credentials: 'include',
       });
@@ -31,7 +31,7 @@ function Cart() {
   const updateCartItemQuantity = (productId, newQuantity) => {
     const quantity = Math.max(newQuantity, 1);
 
-    fetch(`${process.env.REACT_APP_API_URL}/api/cart/items/${productId}`, {
+    fetch(`https://local-treasures.onrender.com/api/cart/items/${productId}`, {
       method: 'PATCH',
       credentials: 'include',
       headers: {
@@ -51,7 +51,7 @@ function Cart() {
   };
 
   const deleteCartItem = (productId) => {
-    fetch(`${process.env.REACT_APP_API_URL}/api/cart/${productId}`, {
+    fetch(`https://local-treasures.onrender.com/api/cart/${productId}`, {
       method: 'DELETE',
       credentials: 'include',
       headers: {

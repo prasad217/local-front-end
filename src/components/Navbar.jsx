@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import ToggleSwitch from './ToggleSwitch'; // Make sure the path is correct
+import ToggleSwitch from './ToggleSwitch'; // Ensure the path is correct
 import cartIcon from './images/cart.png';
 import './Navbar.css';
 
@@ -13,28 +13,36 @@ function Navbar() {
   useEffect(() => {
     const checkLoggedIn = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/user/info`, {
+        const response = await fetch(`https://local-treasures.onrender.com/api/user/info`, {
           method: 'GET',
           credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
           },
         });
-        if (response.ok) {
-          const data = await response.json();
-          setUserName(data.username);
-          setIsLoggedIn(true);
+
+        const contentType = response.headers.get('Content-Type');
+
+        if (contentType && contentType.includes('application/json')) {
+          if (response.ok) {
+            const data = await response.json();
+            setUserName(data.username);
+            setIsLoggedIn(true);
+          }
+        } else {
+          console.error('Received non-JSON response:', await response.text());
         }
       } catch (error) {
         console.error('Error checking login status:', error);
       }
     };
+
     checkLoggedIn();
   }, []);
 
   const handleLogout = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/logout`, {
+      const response = await fetch(`https://local-treasures.onrender.com/logout`, {
         method: 'POST',
         credentials: 'include',
       });
@@ -54,19 +62,18 @@ function Navbar() {
       '/products',
       '/cart',
     ];
-  
+
     const isAllowedStaticPath = allowedPaths.includes(location.pathname);
-  
+
     const productPagePattern = /^\/product\/\d+$/;
-  
+
     const categoryPagePattern = /^\/category\/[a-zA-Z0-9_-]+$/;
-  
+
     const isProductPage = productPagePattern.test(location.pathname);
     const isCategoryPage = categoryPagePattern.test(location.pathname);
-  
+
     return isAllowedStaticPath || isProductPage || isCategoryPage;
   };
-  
 
   if (!shouldRenderNavbar()) {
     return null;
@@ -98,7 +105,6 @@ function Navbar() {
               <Link to="/signin">Sign In</Link>
             </div>
           )}
-         
         </div>
       </div>
     </nav>
@@ -106,4 +112,3 @@ function Navbar() {
 }
 
 export default Navbar;
-

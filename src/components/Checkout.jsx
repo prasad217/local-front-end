@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-
 function Checkout() {
   const navigate = useNavigate();
   const [addresses, setAddresses] = useState([]);
@@ -22,7 +21,7 @@ function Checkout() {
 
   // Fetch addresses
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/api/users/addresses`, {
+    fetch(`https://local-treasures.onrender.com/api/users/addresses`, {
       method: 'GET',
       credentials: 'include',
     })
@@ -41,7 +40,7 @@ function Checkout() {
 
   // Fetch cart items
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/api/cart`, {
+    fetch(`https://local-treasures.onrender.com/api/cart`, {
       method: 'GET',
       credentials: 'include',
     })
@@ -73,7 +72,7 @@ function Checkout() {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    fetch(`${process.env.REACT_APP_API_URL}/api/address`, {
+    fetch(`https://local-treasures.onrender.com/api/address`, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -112,8 +111,8 @@ function Checkout() {
       items: cartItems.map(item => ({ productId: item.product_id, quantity: item.quantity })),
       totalPrice: totalPrice,
     };
-  
-    fetch(`${process.env.REACT_APP_API_URL}/api/orders`, {
+
+    fetch(`https://local-treasures.onrender.com/api/orders`, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -137,7 +136,7 @@ function Checkout() {
       // Handle errors (e.g., show an error message to the user)
     });
   };
-  
+
   return (
     <div>
       <h1>Checkout</h1>
@@ -179,93 +178,93 @@ function Checkout() {
         <form onSubmit={handleSubmit}>
           <h2>Add Address</h2>
           <div>
-          <label>
-            Name:
-            <input
-              type="text"
-              name="name"
-              value={address.name}
-              onChange={handleInputChange}
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Door No:
-            <input
-              type="text"
-              name="door_no"
-              value={address.door_no}
-              onChange={handleInputChange}
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Address Lane:
-            <input
-              type="text"
-              name="address_lane"
-              value={address.address_lane}
-              onChange={handleInputChange}
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Landmark:
-            <input
-              type="text"
-              name="landmark"
-              value={address.landmark}
-              onChange={handleInputChange}
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Pincode:
-            <input
-              type="text"
-              name="pincode"
-              value={address.pincode}
-              onChange={handleInputChange}
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            City:
-            <input
-              type="text"
-              name="city"
-              value={address.city}
-              onChange={handleInputChange}
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            State:
-            <input
-              type="text"
-              name="state"
-              value={address.state}
-              onChange={handleInputChange}
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Phone Number:
-            <input
-              type="text"
-              name="phonenumber"
-              value={address.phonenumber}
-              onChange={handleInputChange}
-            />
-          </label>
-        </div>
+            <label>
+              Name:
+              <input
+                type="text"
+                name="name"
+                value={address.name}
+                onChange={handleInputChange}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Door No:
+              <input
+                type="text"
+                name="door_no"
+                value={address.door_no}
+                onChange={handleInputChange}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Address Lane:
+              <input
+                type="text"
+                name="address_lane"
+                value={address.address_lane}
+                onChange={handleInputChange}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Landmark:
+              <input
+                type="text"
+                name="landmark"
+                value={address.landmark}
+                onChange={handleInputChange}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Pincode:
+              <input
+                type="text"
+                name="pincode"
+                value={address.pincode}
+                onChange={handleInputChange}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              City:
+              <input
+                type="text"
+                name="city"
+                value={address.city}
+                onChange={handleInputChange}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              State:
+              <input
+                type="text"
+                name="state"
+                value={address.state}
+                onChange={handleInputChange}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Phone Number:
+              <input
+                type="text"
+                name="phonenumber"
+                value={address.phonenumber}
+                onChange={handleInputChange}
+              />
+            </label>
+          </div>
           <button type="submit">Submit Address</button>
         </form>
       )}
@@ -289,11 +288,12 @@ function Checkout() {
       
       {/* Place Order Button */}
       <div style={{ padding: '20px 0' }}>
-      <button onClick={placeOrder} style={{ padding: '10px 20px', fontSize: '16px' }}>
-        Place Order
-      </button>
-    </div>
+        <button onClick={placeOrder} style={{ padding: '10px 20px', fontSize: '16px' }}>
+          Place Order
+        </button>
+      </div>
     </div>
   );
 }
+
 export default Checkout;

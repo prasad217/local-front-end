@@ -5,6 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 import ToggleSwitch from './ToggleSwitch';
 import cartIcon from './images/nearbycart.png'; // Ensure the image path is correct
 import styles from './NearbyNavbar.module.css'; // Updated to import as a module
+
 function NearbyNavbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState('');
@@ -14,7 +15,7 @@ function NearbyNavbar() {
   useEffect(() => {
     const checkLoggedIn = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/user/info`, {
+        const response = await fetch(`https://local-treasures.onrender.com/api/user/info`, {
           method: 'GET',
           credentials: 'include',
           headers: {
@@ -35,7 +36,7 @@ function NearbyNavbar() {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/logout`, {
+      const response = await fetch(`https://local-treasures.onrender.com/logout`, {
         method: 'POST',
         credentials: 'include',
       });
@@ -51,7 +52,7 @@ function NearbyNavbar() {
     const allowedPaths = [
       '/dealers/nearby',
       '/dealers/:id/products',
-      '/nearby/cart' ,
+      '/nearby/cart',
       '/nearby/checkout',
       '/nearby/order-confirmation'
     ];
@@ -80,21 +81,20 @@ function NearbyNavbar() {
             <div className={styles.userName} onClick={() => setShowMenu(!showMenu)}>
               {userName}
               {showMenu && (
-  <div className={styles.userMenu}>
-    <div className={styles.menuItem}>
-      <Link to="/profile">Profile</Link>
-    </div>
-    <div className={styles.menuItem}>
-      <Link to="/orders">Orders</Link>
-    </div>
-    <div className={styles.menuItem}>
-      <Link to="/help">Help</Link>
-    </div>
-    <div className={styles.menuItem}>
-      <button onClick={handleLogout}>Sign Out</button>
-    </div>
-  </div>
-
+                <div className={styles.userMenu}>
+                  <div className={styles.menuItem}>
+                    <Link to="/profile">Profile</Link>
+                  </div>
+                  <div className={styles.menuItem}>
+                    <Link to="/orders">Orders</Link>
+                  </div>
+                  <div className={styles.menuItem}>
+                    <Link to="/help">Help</Link>
+                  </div>
+                  <div className={styles.menuItem}>
+                    <button onClick={handleLogout}>Sign Out</button>
+                  </div>
+                </div>
               )}
             </div>
           ) : (
@@ -109,4 +109,3 @@ function NearbyNavbar() {
 }
 
 export default NearbyNavbar;
-
