@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: local-treasures-frontend
+  labels:
+    app: local-treasures-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: local-treasures-frontend
+  template:
+    metadata:
+      labels:
+        app: local-treasures-frontend
+    spec:
+      containers:
+        - name: local-treasures-frontend-container
+          image: prasad217/local-treasures-frontend:latest
+          ports:
+            - containerPort: 80

@@ -10,7 +10,7 @@ function DealerHome() {
 
   const fetchProducts = useCallback(async () => {
     try {
-      const response = await fetch(`https://local-treasures.onrender.com/dealer/products/${dealerInfo.dealerId}`, {
+      const response = await fetch(`http://localhost:31340/dealer/products/${dealerInfo.dealerId}`, {
         method: 'GET',
         credentials: 'include',
       });
@@ -27,7 +27,7 @@ function DealerHome() {
 
   const fetchNearbyOrders = useCallback(async () => {
     try {
-      const response = await fetch(`https://local-treasures.onrender.com/dealer/nearbyOrders/${dealerInfo.dealerId}`, {
+      const response = await fetch(`http://localhost:31340/dealer/nearbyOrders/${dealerInfo.dealerId}`, {
         method: 'GET',
         credentials: 'include',
       });
@@ -46,7 +46,7 @@ function DealerHome() {
   useEffect(() => {
     const fetchDealerInfo = async () => {
       try {
-        const response = await fetch(`https://local-treasures.onrender.com/dealer/info`, {
+        const response = await fetch(`http://localhost:31340/dealer/info`, {
           method: 'GET',
           credentials: 'include',
         });
@@ -68,7 +68,7 @@ function DealerHome() {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch(`https://local-treasures.onrender.com/dealer/logout`, {
+      const response = await fetch(`http://localhost:31340/dealer/logout`, {
         method: 'POST',
         credentials: 'include',
       });
@@ -87,7 +87,7 @@ function DealerHome() {
     const formData = new FormData(event.target);
 
     try {
-      const response = await fetch(`https://local-treasures.onrender.com/dealer/addProduct`, {
+      const response = await fetch(`http://localhost:31340/dealer/addProduct`, {
         method: 'POST',
         body: formData,
         credentials: 'include',
@@ -108,7 +108,7 @@ function DealerHome() {
 
   const deleteProduct = async (productId) => {
     try {
-      const response = await fetch(`https://local-treasures.onrender.com/api/dealer/products/${productId}`, {
+      const response = await fetch(`http://localhost:31340/api/dealer/products/${productId}`, {
         method: 'DELETE',
         credentials: 'include',
         headers: {

@@ -7,7 +7,7 @@ function CategoryProducts() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetch(`https://local-treasures.onrender.com/api/products/category/${categoryName}`)
+    fetch(`http://localhost:31340/api/products/category/${categoryName}`)
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -20,7 +20,7 @@ function CategoryProducts() {
 
   const addToCart = (productId) => {
     // Assuming you have a user session and the API expects a productId
-    fetch(`https://local-treasures.onrender.com/api/cart`, {
+    fetch(`http://localhost:31340/api/cart`, {
       method: 'POST',
       credentials: 'include', // for session cookies
       headers: {

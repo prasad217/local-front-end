@@ -23,7 +23,7 @@ function DealerSignIn() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const url = needOTP ? `https://local-treasures.onrender.com/dealer/verify-otp` : `https://local-treasures.onrender.com/dealer/signin`;
+    const url = needOTP ? `http://localhost:31340/dealer/verify-otp` : `http://localhost:31340/dealer/signin`;
     try {
       const response = await fetch(url, {
         method: 'POST',

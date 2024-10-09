@@ -24,7 +24,7 @@ const NearbyDealers = () => {
 
   const fetchNearbyDealers = async (latitude, longitude) => {
     try {
-      const response = await fetch(`https://local-treasures.onrender.com/api/dealers/nearby?latitude=${latitude}&longitude=${longitude}`);
+      const response = await fetch(`http://localhost:31340/api/dealers/nearby?latitude=${latitude}&longitude=${longitude}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }

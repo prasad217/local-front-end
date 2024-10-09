@@ -21,7 +21,7 @@ function Checkout() {
 
   // Fetch addresses
   useEffect(() => {
-    fetch(`https://local-treasures.onrender.com/api/users/addresses`, {
+    fetch(`http://localhost:31340/api/users/addresses`, {
       method: 'GET',
       credentials: 'include',
     })
@@ -40,7 +40,7 @@ function Checkout() {
 
   // Fetch cart items
   useEffect(() => {
-    fetch(`https://local-treasures.onrender.com/api/cart`, {
+    fetch(`http://localhost:31340/api/cart`, {
       method: 'GET',
       credentials: 'include',
     })
@@ -72,7 +72,7 @@ function Checkout() {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    fetch(`https://local-treasures.onrender.com/api/address`, {
+    fetch(`http://localhost:31340/api/address`, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -112,7 +112,7 @@ function Checkout() {
       totalPrice: totalPrice,
     };
 
-    fetch(`https://local-treasures.onrender.com/api/orders`, {
+    fetch(`http://localhost:31340/api/orders`, {
       method: 'POST',
       credentials: 'include',
       headers: {

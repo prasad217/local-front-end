@@ -10,7 +10,7 @@ function Products() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(`https://local-treasures.onrender.com/api/products`, {
+        const response = await fetch(`http://localhost:31340/api/products`, {
           credentials: 'include',
         });
         if (!response.ok) {
@@ -43,7 +43,7 @@ function Products() {
   const addToCart = async (productId, event) => {
     event.stopPropagation(); // Prevent navigation when clicking "Add to Cart"
     try {
-      const response = await fetch(`https://local-treasures.onrender.com/api/cart`, {
+      const response = await fetch(`http://localhost:31340/api/cart`, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({ productId }),

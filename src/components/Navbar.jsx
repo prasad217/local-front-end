@@ -13,7 +13,7 @@ function Navbar() {
   useEffect(() => {
     const checkLoggedIn = async () => {
       try {
-        const response = await fetch(`https://local-treasures.onrender.com/api/user/info`, {
+        const response = await fetch(`http://localhost:31340/api/user/info`, {
           method: 'GET',
           credentials: 'include',
           headers: {
@@ -42,7 +42,7 @@ function Navbar() {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch(`https://local-treasures.onrender.com/logout`, {
+      const response = await fetch(`http://localhost:31340/logout`, {
         method: 'POST',
         credentials: 'include',
       });

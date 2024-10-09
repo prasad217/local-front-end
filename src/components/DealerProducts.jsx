@@ -10,7 +10,7 @@ function DealerProducts() {
   useEffect(() => {
     const fetchDealerProducts = async () => {
       try {
-        const response = await fetch(`https://local-treasures.onrender.com/api/dealers/${dealerId}/products`, {
+        const response = await fetch(`http://localhost:31340/api/dealers/${dealerId}/products`, {
           credentials: 'include',
         });
         if (!response.ok) {
@@ -29,7 +29,7 @@ function DealerProducts() {
 
   const addToNearbyCart = async (productId, dealerId) => {
     try {
-      const response = await fetch(`https://local-treasures.onrender.com/api/nearby/cart`, {
+      const response = await fetch(`http://localhost:31340/api/nearby/cart`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -59,7 +59,7 @@ function DealerProducts() {
 
   const replaceCart = async (productId, dealerId) => {
     try {
-      const response = await fetch(`https://local-treasures.onrender.com/api/nearby/cart/replace`, {
+      const response = await fetch(`http://localhost:31340/api/nearby/cart/replace`, {
         method: 'POST',
         credentials: 'include',
         headers: {

@@ -6,7 +6,7 @@ function DeliveryAgentHome() {
   const handleToggleSwitch = () => {
     setLiveLocationTracking((prevTracking) => !prevTracking);
     // Call backend API to start/stop live location tracking
-    fetch(`https://local-treasures.onrender.com/delivery-agent/live-location-tracking`, {
+    fetch(`http://localhost:31340/delivery-agent/live-location-tracking`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

@@ -7,7 +7,7 @@ function OrderHistory() {
 
   useEffect(() => {
     // Fetch order history for the current user from backend
-    fetch('https://local-treasures.onrender.com/api/orders/history')
+    fetch('http://localhost:31340/api/orders/history')
       .then(response => response.json())
       .then(data => {
         setOrders(data); // Assuming data is an array of orders with items
@@ -35,7 +35,7 @@ function OrderHistory() {
               {order.items.map(item => (
                 <li key={item.id}>
                   <Link to={`/product/${item.product_id}`}>
-                    <img src={`https://local-treasures.onrender.com/products/${item.image_url}`} alt={item.name} className="product-image" />
+                    <img src={`http://localhost:31340/products/${item.image_url}`} alt={item.name} className="product-image" />
                     {item.name}
                   </Link>
                   <p>Qty Ordered: {item.quantity}</p>

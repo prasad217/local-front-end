@@ -6,14 +6,14 @@ const ProfilePage = () => {
   const [suggestions, setSuggestions] = useState([]);
 
   useEffect(() => {
-    fetch('https://local-treasures.onrender.com/api/user/info', {
+    fetch('http://localhost:31340/api/user/info', {
       credentials: 'include',
     })
       .then(response => response.json())
       .then(data => setUser(data))
       .catch(error => console.error('Error fetching user data:', error));
 
-    fetch('https://local-treasures.onrender.com/api/user/suggestions', {
+    fetch('http://localhost:31340/api/user/suggestions', {
       credentials: 'include',
     })
       .then(response => response.json())

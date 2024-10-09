@@ -22,7 +22,7 @@ function NearbyCheckout() {
 
   // Fetch addresses and cart items
   useEffect(() => {
-    fetch(`https://local-treasures.onrender.com/api/users/nearby-addresses`, {
+    fetch(`http://localhost:31340/api/users/nearby-addresses`, {
       method: 'GET',
       credentials: 'include',
     })
@@ -38,7 +38,7 @@ function NearbyCheckout() {
       setError('Failed to load addresses. Please try again later.');
     });
 
-    fetch(`https://local-treasures.onrender.com/api/nearby/cart`, {
+    fetch(`http://localhost:31340/api/nearby/cart`, {
       method: 'GET',
       credentials: 'include',
     })
@@ -70,7 +70,7 @@ function NearbyCheckout() {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    fetch(`https://local-treasures.onrender.com/api/nearby/address`, {
+    fetch(`http://localhost:31340/api/nearby/address`, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -110,7 +110,7 @@ function NearbyCheckout() {
       deliveryOption: deliveryOption,
     };
   
-    fetch(`https://local-treasures.onrender.com/api/nearby/orders`, {
+    fetch(`http://localhost:31340/api/nearby/orders`, {
       method: 'POST',
       credentials: 'include',
       headers: {

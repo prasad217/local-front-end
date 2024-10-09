@@ -44,7 +44,7 @@ function DealerRegistration() {
     }
     if (stage === 1) {
       try {
-        const response = await fetch(`https://local-treasures.onrender.com/dealer/register`, {
+        const response = await fetch(`http://localhost:31340/dealer/register`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData)
@@ -62,7 +62,7 @@ function DealerRegistration() {
 
   const verifyOtp = async () => {
     try {
-      const response = await fetch(`https://local-treasures.onrender.com/dealer/verify-otp`, {
+      const response = await fetch(`http://localhost:31340/dealer/verify-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: formData.email, otp: formData.otp })
