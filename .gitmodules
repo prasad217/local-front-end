@@ -4,3 +4,6 @@
 [submodule "path/to/submodule-folder"]
 	path = path/to/submodule-folder
 	url = https://github.com/prasad217/local_treasures-root.git
+[submodule "local_treasures-root"]
+	path = local_treasures-root
+	url = https://github.com/prasad217/local_treasures-root.git
