@@ -1,3 +1,6 @@
 [submodule "backend"]
 	path = backend
 	url = https://github.com/prasad217/local_treasures-root.git
+[submodule "path/to/submodule-folder"]
+	path = path/to/submodule-folder
+	url = https://github.com/prasad217/local_treasures-root.git
